@@ -1,2 +1,0 @@
-com/tiobe/Gherkin/AppTest.java
- com.tiobe.Gherkin.AppTest

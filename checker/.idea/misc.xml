@@ -6,7 +6,7 @@
         <PerGrammarGenerationSettings>
           <option name="fileName" value="$PROJECT_DIR$/app/src/main/antlr/Gherkin.g4" />
           <option name="autoGen" value="true" />
-          <option name="outputDir" value="D:\tics.wd\tics\Gherkin\checker\app\build\generated-src\antlr\main\com\tiobe\antlr" />
+          <option name="outputDir" value="D:\tics.wd\tics\rules\gherkin\checker\app\build\generated-src\antlr\main\com\tiobe\antlr" />
           <option name="libDir" value="" />
           <option name="encoding" value="" />
           <option name="pkg" value="" />

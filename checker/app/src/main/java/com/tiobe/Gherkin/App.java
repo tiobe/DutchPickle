@@ -18,16 +18,28 @@ public class App {
 
     public static void main(String... args) throws IOException  {
         RULES = new ArrayList<>();
+        String filename = "";
+
+        if (args.length == 0) {
+            System.out.println("No argument provided, use 'app { --rule<digits> }* <inputfile>.feature'");
+            System.exit(1);
+        }
         for (String arg : args) {
             if (arg.startsWith("--rule")) {
                 RULES.add(arg.substring(arg.lastIndexOf('e') + 1));
-            } else if (!arg.toLowerCase().endsWith(".feature")) {
-                System.out.println("Please specify a .feature file as input parameter");
+            } else if (arg.toLowerCase().endsWith(".feature")) {
+                filename = arg;
+            } else {
+                System.out.println("Unknown option '" + arg + "' encountered, please run without arguments for help");
                 System.exit(1);
             }
         }
 
-        final String filename = args[0];
+        if (filename.isEmpty()) {
+            System.out.println("No input file name specified");
+            System.exit(1);
+        }
+
         final CharStream charStream = CharStreams.fromFileName(filename);
         final GherkinLexer lexer = new GherkinLexer(charStream);
         final CommonTokenStream tokens = new CommonTokenStream(lexer);

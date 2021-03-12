@@ -39,4 +39,13 @@ When # Violation
 And
 *
 *
+* 
+
+Scenario: nothing wrong with a table between when and then
+
+When there is a table
+
+| some | table |
+
+Then the rule should not fire
 

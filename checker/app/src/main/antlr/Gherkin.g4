@@ -5,22 +5,16 @@ grammar Gherkin;
 // PARSER
 
 // TODO
-// Every day: add 2 extra test cases and run again (https://github.com/search?q=language%3Agherkin&type=code)
-
-// FIRST DELIVERY
-
-// check why Gherkin folder is generated in tics.wd/tics folder
-// [check-in tag Bram] inchecken van files: esp.tiobe.com/home/wilde/svnrepository/rules/trunk
-// [check-in tag Bram] opruimen oude repositories: samples, test files, script and IntelliJ project
 // Rule: Subsequent Givens, Whens, and/or Thens are not allowed (use And or But)
 // Rule: Features files should not contain ToDo (or in other casing)
 // Rule: There should always at least one empty line between Scenarios
 // Rule: There should not be empty cells in tables
-// Rule: Scenarios should be short (e.g. less than X lines)
+// Rule: Scenarios should be short (e.g. less than 100 lines)
 
 // add other 15 checks
 // deployment
 // SECOND DELIVERY
+// check what part should be in tics.dev to be able to generate the Gherkin checker, such as ANTLR framework
 // rules in a separate directory with .class files to allow dynamic patching
 // make sure other charsets are handled correctly as well, see example file
 // as-you-type
