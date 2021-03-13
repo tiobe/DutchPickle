@@ -19,6 +19,7 @@ public class Violation {
             /*  2 */ "After a When a Then should follow",
             /*  3 */ "A Given should not follow a When or a Then",
             /*  4 */ "All data table headers should be used in the Scenario Outline",
-            /*  5 */ "After a Given a When should follow"
+            /*  5 */ "After a Given a When should follow",
+            /*  6 */ "Subsequent Givens, Whens, and/or Thens are not allowed"
     ));
 }

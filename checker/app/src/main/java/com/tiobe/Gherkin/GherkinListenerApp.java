@@ -10,6 +10,7 @@ public class GherkinListenerApp extends GherkinBaseListener {
         Rule3.check(ctx);
         Rule4.check(ctx);
         Rule5.check(ctx);
+        Rule6.check(ctx);
     }
 }
 
