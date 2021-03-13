@@ -49,8 +49,7 @@ public class Rule4 {
                         String header = element.getText().substring(1).trim();
                         // check whether header is empty because last table entry "| " could match as well
                         if (!header.isEmpty() && !parameters.contains(header)) {
-                            new Violation(4, item.getStart().getLine(), item.getStart().getCharPositionInLine(),
-                                    "Table header '" + element.getText().substring(1).trim() + "' is not used in this Scenario Outline");
+                            new Violation(4, item,"Table header '" + element.getText().substring(1).trim() + "' is not used in this Scenario Outline");
                           }
                     }
                     tableHeader = false;

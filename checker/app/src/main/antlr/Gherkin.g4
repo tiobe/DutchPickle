@@ -5,15 +5,10 @@ grammar Gherkin;
 // PARSER
 
 // TODO
-// Rule: Subsequent Givens, Whens, and/or Thens are not allowed (use And or But)
-// Rule: Features files should not contain ToDo (or in other casing)
-// Rule: There should always at least one empty line between Scenarios
-// Rule: There should not be empty cells in tables
-// Rule: Scenarios should be short (e.g. less than 100 lines)
-
-// add other 15 checks
+// add other 10 checks
 // deployment
 // SECOND DELIVERY
+
 // check what part should be in tics.dev to be able to generate the Gherkin checker, such as ANTLR framework
 // rules in a separate directory with .class files to allow dynamic patching
 // make sure other charsets are handled correctly as well, see example file

@@ -11,10 +11,25 @@ public class GherkinListenerApp extends GherkinBaseListener {
         Rule4.check(ctx);
         Rule5.check(ctx);
         Rule6.check(ctx);
+        Rule8.check(ctx);
     }
 
     @Override public void enterDatatable(GherkinParser.DatatableContext ctx) {
         Rule9.check(ctx);
     }
+
+    @Override public void enterInstructionDescription(GherkinParser.InstructionDescriptionContext ctx) {
+        Rule7.check(ctx);
+    }
+
+    @Override public void enterStepDescription(GherkinParser.StepDescriptionContext ctx) {
+        Rule7.check(ctx);
+    }
+
+    @Override public void enterDescription(GherkinParser.DescriptionContext ctx) {
+        Rule7.check(ctx);
+    }
+
+
 }
 

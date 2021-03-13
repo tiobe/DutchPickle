@@ -17,21 +17,21 @@ public class Rule6 {
                 GherkinParser.StepItemContext item = step.stepItem();
                 if (item.given() != null) {
                     if (givenFound) {
-                        new Violation(6, item.getStart().getLine(), item.getStart().getCharPositionInLine(), "Consecutive Given found");
+                        new Violation(6, item, "Consecutive Given found");
                     }
                     givenFound = true;
                     whenFound = false;
                     thenFound = false;
                 } else if (item.when() != null) {
                     if (whenFound) {
-                        new Violation(6, item.getStart().getLine(), item.getStart().getCharPositionInLine(), "Consecutive When found");
+                        new Violation(6, item, "Consecutive When found");
                     }
                     whenFound = true;
                     givenFound = false;
                     thenFound = false;
                 } else if (item.then() != null) {
                     if (thenFound) {
-                        new Violation(6, item.getStart().getLine(), item.getStart().getCharPositionInLine(), "Consecutive Then found");
+                        new Violation(6, item, "Consecutive Then found");
                     }
                     thenFound = true;
                     givenFound = false;

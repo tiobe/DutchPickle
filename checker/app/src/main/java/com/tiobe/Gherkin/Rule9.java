@@ -15,7 +15,7 @@ public class Rule9 {
             // last cell is always empty according to the parse tree, so that one should not be reported (i.e. the first occurrence is skipped)
             if (cell.getText().replaceAll("[|\\s]", "").isEmpty()) {
                 if (violations) {
-                    new Violation(9, ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
+                    new Violation(9, ctx);
                 }
                 violations = true;
             }

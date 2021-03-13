@@ -12,8 +12,6 @@ public class Rule1 {
         if (ctx.stepInstruction() != null && ctx.stepInstruction().scenarioOutline() != null) {
             int numberOfScenarios = 0;
             boolean examplesContext = false;
-            int lineNumber = ctx.getStart().getLine();
-            int columnNumber = ctx.getStart().getCharPositionInLine();
 
             for (GherkinParser.StepContext step : ctx.step()) {
                 GherkinParser.StepItemContext item = step.stepItem();
@@ -34,7 +32,7 @@ public class Rule1 {
             }
 
             if (numberOfScenarios == 1) {
-                new Violation(1, lineNumber, columnNumber, "Scenario Outline contains only 1 Scenario");
+                new Violation(1, ctx, "Scenario Outline contains only 1 Scenario");
             }
         }
     }
