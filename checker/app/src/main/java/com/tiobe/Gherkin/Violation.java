@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Violation {
+    Violation(int ruleID, int lineNumber, int columnNumber) {
+        this(ruleID, lineNumber, columnNumber, "");
+    }
     Violation(int ruleID, int lineNumber, int columnNumber, String extraMessage) {
         System.out.println();
         System.out.println(App.FILENAME + "(" + lineNumber + ":" + columnNumber + "):");
@@ -20,6 +23,9 @@ public class Violation {
             /*  3 */ "A Given should not follow a When or a Then",
             /*  4 */ "All data table headers should be used in the Scenario Outline",
             /*  5 */ "After a Given a When should follow",
-            /*  6 */ "Subsequent Givens, Whens, and/or Thens are not allowed"
+            /*  6 */ "Subsequent Givens, Whens, and/or Thens are not allowed",
+            "",
+            "",
+            /*  9 */ "There should be no empty cells in tables"
     ));
 }

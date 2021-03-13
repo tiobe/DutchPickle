@@ -22,14 +22,14 @@ public class Rule5 {
                 } else if (item.and() != null || item.anystep() != null || item.but() != null || item.datatable() != null) {
                     // do nothing because this is just syntactic sugar
                 } else if (givenFound && item.when() == null) {
-                    new Violation(5, lineNumber, columnNumber, "");
+                    new Violation(5, lineNumber, columnNumber);
                     givenFound = false;
                 } else {
                     givenFound = false;
                 }
             }
             if (givenFound) {
-                new Violation(5, lineNumber, columnNumber, "");
+                new Violation(5, lineNumber, columnNumber);
             }
         }
     }

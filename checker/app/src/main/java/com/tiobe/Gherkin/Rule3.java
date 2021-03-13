@@ -16,7 +16,7 @@ public class Rule3 {
                 if (item.when() != null || item.then() != null) {
                     whenOrThenFound = true;
                 } else if (whenOrThenFound && item.given() != null) {
-                    new Violation(3, item.getStart().getLine(), item.getStart().getCharPositionInLine(), "");
+                    new Violation(3, item.getStart().getLine(), item.getStart().getCharPositionInLine());
                 }
             }
         }

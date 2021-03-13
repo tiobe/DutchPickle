@@ -12,5 +12,9 @@ public class GherkinListenerApp extends GherkinBaseListener {
         Rule5.check(ctx);
         Rule6.check(ctx);
     }
+
+    @Override public void enterDatatable(GherkinParser.DatatableContext ctx) {
+        Rule9.check(ctx);
+    }
 }
 
