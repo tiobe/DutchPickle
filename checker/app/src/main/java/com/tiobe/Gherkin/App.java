@@ -5,12 +5,14 @@ import com.tiobe.antlr.GherkinParser;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
 
 public class App {
     public static String FILENAME;
@@ -47,7 +49,7 @@ public class App {
         final GherkinParser parser = new GherkinParser(tokens);
         final ParseTree tree = parser.main();
         ParseTreeWalker walker = new ParseTreeWalker();
-        walker.walk(new GherkinListenerApp(), tree);
+        walker.walk(new GherkinListenerApp(tokens), tree);
         System.exit(0);
     }
 }

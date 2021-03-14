@@ -1,9 +1,21 @@
 package com.tiobe.Gherkin;
 
 import com.tiobe.antlr.GherkinBaseListener;
+import com.tiobe.antlr.GherkinLexer;
 import com.tiobe.antlr.GherkinParser;
+import org.antlr.v4.runtime.BufferedTokenStream;
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.TerminalNode;
+
+import java.util.List;
 
 public class GherkinListenerApp extends GherkinBaseListener {
+
+    public GherkinListenerApp(BufferedTokenStream tokens) {
+        Rule7.check(tokens);
+    }
+
     @Override public void exitInstruction(GherkinParser.InstructionContext ctx) {
         Rule1.check(ctx);
         Rule2.check(ctx);
@@ -29,7 +41,5 @@ public class GherkinListenerApp extends GherkinBaseListener {
     @Override public void enterDescription(GherkinParser.DescriptionContext ctx) {
         Rule7.check(ctx);
     }
-
-
 }
 

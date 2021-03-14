@@ -82,13 +82,13 @@ BOMUTF16 : '\uFEFF' -> skip ;
 
 WHITESPACE: [ \t] -> skip ;
 
-COMMENT: '#' ~[\r\n\f]* -> skip ;
+COMMENT: '#' ~[\r\n\f]* -> channel(HIDDEN) ;
 
 DOCSTRING1
-    : '"""' .*? '"""' -> skip ;
+    : '"""' .*? '"""' -> channel(HIDDEN) ;
 
 DOCSTRING2
-    : '```' .*? '```' -> skip ;
+    : '```' .*? '```' -> channel(HIDDEN) ;
 
 // Instructions
 BACKGROUND: 'Background:' ;
