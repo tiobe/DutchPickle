@@ -4,9 +4,10 @@ import pathlib
 import re
 import subprocess
 import tarfile
+import tempfile
 import zipfile
 
-BINDIR='C:/temp/GherkinChecker'
+BINDIR=tempfile.gettempdir() + '/GherkinChecker'
 
 def parse_arguments():
   parser = argparse.ArgumentParser(description='Gherkin Code Checker Tester')
@@ -25,6 +26,12 @@ def unzip(sourcefile, targetfile):
       zip_ref.extractall(targetfile)
   else: 
     print(f'zip file format of {sourcefile} not supported')
+    
+def get_tics_workspace():
+  dir = os.environ.get('TICS_WORKSPACE')
+  if dir is None:
+    exit('Please set the TICS_WORKSPACE environment variable')
+  return dir
     
 def runtests(args, app, rules):
   if os.path.isdir(args.input):
@@ -62,15 +69,16 @@ def runtests(args, app, rules):
     
 def main():      
   args = parse_arguments()
+  workspace = get_tics_workspace()
 
   # performing build
-  build = subprocess.getoutput('cd /d D:/tics.wd/tics/rules/gherkin/checker && gradle build')
+  build = subprocess.getoutput(f'cd /d {workspace}/rules/gherkin/checker && gradle build')
   print(build)
   if 'BUILD FAILED' in build:
     exit('Build failed, stopping the process')
 
   # prepare the code checker and run it
-  unzip('D:/tics.wd/tics/rules/gherkin/checker/app/build/distributions/app.zip', BINDIR)
+  unzip(f'{workspace}/rules/gherkin/checker/app/build/distributions/app.zip', BINDIR)
   app = BINDIR + '/app/bin/app.bat'
   rules = ''
   if not args.rule is None:
