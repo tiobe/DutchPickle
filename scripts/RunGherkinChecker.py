@@ -72,7 +72,7 @@ def main():
   workspace = get_tics_workspace()
 
   # performing build
-  build = subprocess.getoutput(f'cd /d {workspace}/rules/gherkin/checker && gradle build')
+  build = subprocess.getoutput(f'cd {workspace}/rules/gherkin/checker && gradle build')
   print(build)
   if 'BUILD FAILED' in build:
     exit('Build failed, stopping the process')
