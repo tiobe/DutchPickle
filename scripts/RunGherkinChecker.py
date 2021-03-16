@@ -72,14 +72,15 @@ def main():
   workspace = get_tics_workspace()
 
   # performing build
-  build = subprocess.getoutput(f'cd {workspace}/rules/gherkin/checker && gradle build')
+  build = subprocess.getoutput(f'cd {workspace}/rules/gherkin/checker && gradlew build')
   print(build)
   if 'BUILD FAILED' in build:
     exit('Build failed, stopping the process')
 
   # prepare the code checker and run it
   unzip(f'{workspace}/rules/gherkin/checker/app/build/distributions/app.zip', BINDIR)
-  app = BINDIR + '/app/bin/app.bat'
+  app = BINDIR + '/app/bin/app'
+  os.chmod(app, 0o755)
   rules = ''
   if not args.rule is None:
     for rule in args.rule:

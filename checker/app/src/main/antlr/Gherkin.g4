@@ -5,11 +5,12 @@ grammar Gherkin;
 // PARSER
 
 // TODO
+// rename generated app.zip to DutchPickle
 // add other 10 checks
+// make sure it is completely build via the TICS build and published on the website
 // deployment
 // SECOND DELIVERY
 
-// check what part should be in tics.dev to be able to generate the Gherkin checker, such as ANTLR framework
 // rules in a separate directory with .class files to allow dynamic patching
 // make sure other charsets are handled correctly as well, see example file
 // as-you-type
