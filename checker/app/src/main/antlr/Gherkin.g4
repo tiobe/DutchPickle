@@ -5,7 +5,6 @@ grammar Gherkin;
 // PARSER
 
 // TODO
-// rename generated app.zip to DutchPickle
 // add other 10 checks
 // make sure it is completely build via the TICS build and published on the website
 // deployment

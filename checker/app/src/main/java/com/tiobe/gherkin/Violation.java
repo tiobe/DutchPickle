@@ -1,4 +1,4 @@
-package com.tiobe.Gherkin;
+package com.tiobe.gherkin;
 
 import com.tiobe.antlr.GherkinParser;
 import org.antlr.v4.runtime.ParserRuleContext;

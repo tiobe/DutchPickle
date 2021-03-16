@@ -15,10 +15,31 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 
+compileJava {
+    options.release = 11
+}
+
 application {
     // Define the main class for the application.
-    mainClass = 'com.tiobe.Gherkin.App'
+    mainClass = 'com.tiobe.gherkin.App'
 }
+
+task generateInfo(type: GenerateInfoTask) {
+    javaVersion = compileJava.options.release.get()
+    svnVersion = project.hasProperty('SVNVERSION') ? SVNVERSION : '?'
+    jsonFile = file "${project.buildDir}/generated/info.json"
+}
+
+distributions {
+    main {
+        distributionBaseName = 'DutchPickle'
+        contents {
+            from "${project.buildDir}/generated/info.json"
+        }
+    }
+}
+
+[distZip, distTar, installDist]*.dependsOn generateInfo
 
 tasks.named('test') {
     // Use junit platform for unit tests.
@@ -38,3 +59,29 @@ configurations {
 generateGrammarSource {
     outputDirectory = file("${project.buildDir}/generated-src/antlr/main/com/tiobe/antlr")
 }
+
+class GenerateInfoTask extends DefaultTask {
+    @Input
+    String javaVersion
+
+    @Input
+    String svnVersion
+
+    @OutputFile
+    File jsonFile
+
+    @TaskAction
+    def generateInfo() {
+        def info = [
+          revision: svnVersion,
+          requirements: [
+            [ id: "java", version: javaVersion ],
+          ],
+          version: svnVersion,
+        ]
+        def json = groovy.json.JsonOutput.toJson(info)
+        def pretty = groovy.json.JsonOutput.prettyPrint(json) + System.lineSeparator()
+        jsonFile.text = pretty
+    }
+}
+

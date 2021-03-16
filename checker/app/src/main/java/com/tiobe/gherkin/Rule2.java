@@ -1,35 +1,35 @@
-package com.tiobe.Gherkin;
+package com.tiobe.gherkin;
 
 import com.tiobe.antlr.GherkinParser;
 
-public class Rule5 {
+public class Rule2 {
     static void check(GherkinParser.InstructionContext ctx) {
-        if (!App.RULES.contains("5")) {
+        if (!App.RULES.contains("2")) {
             return;
         }
 
-        // Rule Gherkin-WhenAfterGiven: if a "Given" is not immediately followed by "Then" then fire the rule
+        // Rule Gherkin-ThenAfterWhen: if a "When" is not immediately followed by "Then" then fire the rule
         if (ctx.stepInstruction() != null && (ctx.stepInstruction().scenario() != null || ctx.stepInstruction().scenarioOutline() != null)) {
-            boolean givenFound = false;
+            boolean whenFound = false;
             int lineNumber = 0;
             int columnNumber = 0;
             for (GherkinParser.StepContext step : ctx.step()) {
                 GherkinParser.StepItemContext item = step.stepItem();
-                if (item.given() != null) {
-                    givenFound = true;
+                if (item.when() != null) {
+                    whenFound = true;
                     lineNumber = item.getStart().getLine();
                     columnNumber = item.getStart().getCharPositionInLine();
                 } else if (item.and() != null || item.anystep() != null || item.but() != null || item.datatable() != null) {
                     // do nothing because this is just syntactic sugar
-                } else if (givenFound && item.when() == null) {
-                    new Violation(5, lineNumber, columnNumber);
-                    givenFound = false;
+                } else if (whenFound && item.then() == null) {
+                    new Violation(2, lineNumber, columnNumber);
+                    whenFound = false;
                 } else {
-                    givenFound = false;
+                    whenFound = false;
                 }
             }
-            if (givenFound) {
-                new Violation(5, lineNumber, columnNumber);
+            if (whenFound) {
+                new Violation(2, lineNumber, columnNumber);
             }
         }
     }

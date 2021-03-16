@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import argparse
 import os
 import pathlib
@@ -7,7 +8,8 @@ import tarfile
 import tempfile
 import zipfile
 
-BINDIR=tempfile.gettempdir() + '/GherkinChecker'
+BINDIR = tempfile.gettempdir() + '/GherkinChecker'
+WORKSPACE_ENV = 'TICSDEVPATH'
 
 def parse_arguments():
   parser = argparse.ArgumentParser(description='Gherkin Code Checker Tester')
@@ -28,9 +30,9 @@ def unzip(sourcefile, targetfile):
     print(f'zip file format of {sourcefile} not supported')
     
 def get_tics_workspace():
-  dir = os.environ.get('TICS_WORKSPACE')
+  dir = os.environ.get(WORKSPACE_ENV)
   if dir is None:
-    exit('Please set the TICS_WORKSPACE environment variable')
+    exit(f'Please set the {WORKSPACE_ENV} environment variable')
   return dir
     
 def runtests(args, app, rules):
@@ -78,8 +80,8 @@ def main():
     exit('Build failed, stopping the process')
 
   # prepare the code checker and run it
-  unzip(f'{workspace}/rules/gherkin/checker/app/build/distributions/app.zip', BINDIR)
-  app = BINDIR + '/app/bin/app'
+  unzip(f'{workspace}/rules/gherkin/checker/app/build/distributions/DutchPickle.zip', BINDIR)
+  app = BINDIR + '/DutchPickle/bin/app'
   os.chmod(app, 0o755)
   rules = ''
   if not args.rule is None:

@@ -1,4 +1,4 @@
-package com.tiobe.Gherkin;
+package com.tiobe.gherkin;
 
 import com.tiobe.antlr.GherkinLexer;
 import com.tiobe.antlr.GherkinParser;
