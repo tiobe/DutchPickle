@@ -1,7 +1,9 @@
 plugins {
     id 'application'
     id 'antlr'
+    id 'checkstyle'
     id 'idea'
+    id 'jacoco'
 }
 
 repositories {
@@ -9,9 +11,11 @@ repositories {
 }
 
 dependencies {
-    antlr "org.antlr:antlr4:4.9.1"
-    implementation "org.antlr:antlr4-runtime:4.9.1"
+    antlr 'org.antlr:antlr4:4.9.2'
+    implementation 'org.antlr:antlr4-runtime:4.9.1'
+    implementation 'com.google.code.gson:gson:2.8.6'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 
@@ -46,6 +50,12 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+}
+
 /**
  * Without the next section Gradle will add a 'compile' dependency on Antlr3:
  * https://github.com/gradle/gradle/issues/820
@@ -59,6 +69,8 @@ configurations {
 generateGrammarSource {
     outputDirectory = file("${project.buildDir}/generated-src/antlr/main/com/tiobe/antlr")
 }
+
+checkstyleMain.exclude '**/com/tiobe/antlr/**'
 
 class GenerateInfoTask extends DefaultTask {
     @Input

@@ -10,7 +10,7 @@ DAEMON := --no-daemon # to prevent using the Gradle Daemon in CI
 GRADLE := $(CURDIR)/checker/gradlew -PSVNVERSION="$(SVNVERSION)" $(DAEMON)
 TOOL := DutchPickle
 
-.PHONY: build clean rebuild test unittest ticstest package relnotes clean_relnotes publish
+.PHONY: build clean rebuild test unittest package relnotes clean_relnotes publish
 
 all: build
 
@@ -27,12 +27,15 @@ test: unittest
 unittest:
 	$(GRADLE) test -p checker
 
-RULES=$(shell ls tests | sed -ne 's/^Rule\([0-9][0-9]*\)\.feature$$/\1/p')
-ticstest: build
-	./scripts/RunGherkinChecker.py ./tests --rule $(RULES) --test
+coveragereport:
+	$(GRADLE) test jacocoTestReport
+ifneq ($(TESTCOVERAGE_RESULTDIR),)
+	$(MKDIR) "$(TESTCOVERAGE_RESULTDIR)/TICSsql"
+	cp $(TICSRULESPATH)/TICSsql/build/reports/jacoco/test/jacocoTestReport.xml "$(TESTCOVERAGE_RESULTDIR)/TICSsql/"
+endif
 
 package: build
-	cp checker/app/build/distributions/DutchPickle.zip $(TOOL)-$(SVNVERSION).zip
+	cp checker/build/distributions/DutchPickle.zip $(TOOL)-$(SVNVERSION).zip
 
 # The SVN repository number from which revisions onwards one must
 # collect release notes.

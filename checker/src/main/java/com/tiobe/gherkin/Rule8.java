@@ -1,27 +1,30 @@
 package com.tiobe.gherkin;
 
-import com.tiobe.antlr.GherkinLexer;
 import com.tiobe.antlr.GherkinParser;
-import org.antlr.v4.runtime.BufferedTokenStream;
-import org.antlr.v4.runtime.Token;
 
-public class Rule8 {
-    static void check(GherkinParser.InstructionContext ctx) {
-        if (!App.RULES.contains("8")) {
-            return;
-        }
+import java.util.List;
 
+public class Rule8 extends Rule {
+    public Rule8(final List<Violation> violations) {
+        super(violations);
+    }
+
+    public String getSynopsis() {
+        return "Scenarios should be short (less than 100 steps)";
+    }
+
+    public void check(final GherkinParser.InstructionContext ctx) {
         // Rule Gherkin-ScenariosShouldNotBeLong: Scenario Outlines may only contain 100 steps (excluding datatables)
         if (ctx.stepInstruction() != null && (ctx.stepInstruction().scenario() != null || ctx.stepInstruction().scenarioOutline() != null)) {
             int steps = 0;
             for (GherkinParser.StepContext step : ctx.step()) {
-                GherkinParser.StepItemContext item = step.stepItem();
+                final GherkinParser.StepItemContext item = step.stepItem();
                 if (item.datatable() == null) {
                     steps++;
                 }
             }
             if (steps > 100) {
-                new Violation(8, ctx, "This Scenario Outline contains " + steps + " steps");
+                addViolation(8, ctx, "This Scenario Outline contains " + steps + " steps");
             }
         }
     }

@@ -2,19 +2,26 @@ package com.tiobe.gherkin;
 
 import com.tiobe.antlr.GherkinParser;
 
-public class Rule1 {
-    static void check(GherkinParser.InstructionContext ctx) {
-        if (!App.RULES.contains("1")) {
-            return;
-        }
+import java.util.List;
 
+public class Rule1 extends Rule {
+    public Rule1(final List<Violation> violations) {
+        super(violations);
+    }
+
+    @Override
+    public String getSynopsis() {
+        return "A Scenario Outline should have more than one Scenario";
+    }
+
+    public void check(final GherkinParser.InstructionContext ctx) {
         // Rule Gherkin-ScenarioOutlineShouldHaveMoreThanOneScenario: a Scenario Outline should contain more than one Scenario
         if (ctx.stepInstruction() != null && ctx.stepInstruction().scenarioOutline() != null) {
             int numberOfScenarios = 0;
             boolean examplesContext = false;
 
             for (GherkinParser.StepContext step : ctx.step()) {
-                GherkinParser.StepItemContext item = step.stepItem();
+                final GherkinParser.StepItemContext item = step.stepItem();
                 if (item.examples() != null) {
                     examplesContext = true;
                 } else if (examplesContext && item.datatable() != null) {
@@ -32,7 +39,7 @@ public class Rule1 {
             }
 
             if (numberOfScenarios == 1) {
-                new Violation(1, ctx, "Scenario Outline contains only 1 Scenario");
+                addViolation(1, ctx, "Scenario Outline contains only 1 Scenario");
             }
         }
     }

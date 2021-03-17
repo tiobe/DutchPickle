@@ -6,57 +6,51 @@ import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-public class Rule7 {
-    static void check(GherkinParser.InstructionDescriptionContext ctx) {
-        if (!App.RULES.contains("7")) {
-            return;
-        }
+import java.util.List;
 
-        // Rule Gherkin-NoToDo: Features files should not contain ToDo
-        if (isToDo(ctx.TEXT())) {
-            new Violation(7, ctx);
-        }
+public class Rule7 extends Rule {
+    public Rule7(final List<Violation> violations) {
+        super(violations);
     }
-    static void check(GherkinParser.StepDescriptionContext ctx) {
-        if (!App.RULES.contains("7")) {
-            return;
-        }
 
-        // Rule Gherkin-NoToDo: Features files should not contain ToDo
-        if (isToDo(ctx.TEXT())) {
-            new Violation(7, ctx);
-        }
+    public String getSynopsis() {
+        return "Features files should not contain ToDo";
     }
-    static void check(GherkinParser.DescriptionContext ctx) {
-        if (!App.RULES.contains("7")) {
-            return;
-        }
 
+    public void check(final GherkinParser.InstructionDescriptionContext ctx) {
         // Rule Gherkin-NoToDo: Features files should not contain ToDo
         if (isToDo(ctx.TEXT())) {
-            new Violation(7, ctx);
+            addViolation(7, ctx);
         }
     }
 
-    private static boolean isToDo(TerminalNode text) {
+    public void check(final GherkinParser.StepDescriptionContext ctx) {
+        // Rule Gherkin-NoToDo: Features files should not contain ToDo
+        if (isToDo(ctx.TEXT())) {
+            addViolation(7, ctx);
+        }
+    }
+
+    public void check(final GherkinParser.DescriptionContext ctx) {
+        // Rule Gherkin-NoToDo: Features files should not contain ToDo
+        if (isToDo(ctx.TEXT())) {
+            addViolation(7, ctx);
+        }
+    }
+
+    private static boolean isToDo(final TerminalNode text) {
         return text != null ? text.getText().trim().equalsIgnoreCase("todo") : false;
     }
 
-    static void check(BufferedTokenStream tokens) {
-        if (!App.RULES.contains("7")) {
-            return;
-        }
-
+    public void check(final BufferedTokenStream tokens) {
         for (Token token : tokens.getTokens()) {
             if (token.getType() == GherkinLexer.COMMENT || token.getType() == GherkinLexer.DOCSTRING1 || token.getType() == GherkinLexer.DOCSTRING2) {
                 for (String part : token.getText().split("\\s")) {
                     if (part.equalsIgnoreCase("todo")) {
-                        new Violation(7, token.getLine(), token.getCharPositionInLine());
+                        addViolation(7, token.getLine(), token.getCharPositionInLine());
                     }
                 }
             }
         }
     }
-
-
 }
