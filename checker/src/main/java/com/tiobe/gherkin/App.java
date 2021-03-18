@@ -43,7 +43,7 @@ public class App {
 
     public static Class<Rule> getRuleByName(final String ruleName) {
         try {
-            return (Class<Rule>) Class.forName(App.class.getPackageName() + "." + "Rule" + ruleName);
+            return (Class<Rule>) Class.forName(App.class.getPackageName() + "." + ruleName);
         } catch (final ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -63,7 +63,7 @@ public class App {
         String filename = "";
 
         if (args.length == 0) {
-            System.out.println("No argument provided, use 'app { --rule<digits> }* <inputfile>.feature'");
+            System.out.println("No argument provided, use 'DutchPickle { --rule<digits> }* <inputfile>.feature'");
             System.exit(1);
         }
         for (String arg : args) {
