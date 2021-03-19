@@ -19,7 +19,7 @@ public class Rule8 extends Rule {
             int steps = 0;
             for (GherkinParser.StepContext step : ctx.step()) {
                 final GherkinParser.StepItemContext item = step.stepItem();
-                if (item.datatable() == null) {
+                if (item.datatable() == null && item.examples() == null) {
                     steps++;
                 }
             }
