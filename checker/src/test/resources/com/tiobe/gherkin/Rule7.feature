@@ -16,3 +16,8 @@ to do
 yes 
 
 """
+
+Scenario:
+# TODO: this is also a violation  # Violation
+# todos: this one is OK # OK
+# @todo: this is a violation as well # Violation

@@ -45,7 +45,7 @@ public class Rule7 extends Rule {
     public void check(final BufferedTokenStream tokens) {
         for (Token token : tokens.getTokens()) {
             if (token.getType() == GherkinLexer.COMMENT || token.getType() == GherkinLexer.DOCSTRING1 || token.getType() == GherkinLexer.DOCSTRING2) {
-                for (String part : token.getText().split("\\s")) {
+                for (String part : token.getText().split("\\W")) {
                     if (part.equalsIgnoreCase("todo")) {
                         addViolation(7, token.getLine(), token.getCharPositionInLine());
                     }
