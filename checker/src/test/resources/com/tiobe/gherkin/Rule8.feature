@@ -477,3 +477,244 @@ Then ok the end
 Then ok the end
 Then ok the end
 Then ok the end
+
+Scenario Outline: # Violation
+Given bla
+* bla
+* bla
+* bla
+*
+* bla
+* bla
+* bla
+* bla
+* blabla
+* bla
+* bla
+*
+* * bla
+* bla
+* bla
+*
+* bla
+* bla
+* bla
+* bla
+* blabla
+* bla
+* bla
+*
+* * bla
+* bla
+* bla
+*
+* bla
+* bla
+* bla
+* bla
+* blabla
+* bla
+* bla
+*
+* * bla
+* bla
+* bla
+*
+* bla
+* bla
+* bla
+* bla
+* blabla
+* bla
+* bla
+* * bla
+* bla
+* bla
+*
+* bla
+* bla
+* bla
+* bla
+* blabla
+* bla
+* bla
+*
+* * bla
+* bla
+* bla
+*
+* bla
+* bla
+* bla
+* bla
+* blabla
+* bla
+* bla
+*
+* * bla
+* bla
+* bla
+*
+* bla
+* bla
+* bla
+* bla
+* blabla
+* bla
+* bla
+*
+* * bla
+* bla
+* bla
+*
+* bla
+* bla
+* bla
+* bla
+* blabla
+* bla
+* bla
+* * bla
+* bla
+* bla
+*
+* bla
+* bla
+* bla
+* bla
+* blabla
+* bla
+* bla
+*
+* * bla
+* bla
+* bla
+*
+* bla
+* bla
+* bla
+* bla
+* blabla
+* bla
+* bla
+*
+* * bla
+* bla
+* bla
+*
+* bla
+* bla
+* bla
+* bla
+* blabla
+* bla
+* bla
+*
+* * bla
+* bla
+* bla
+*
+* bla
+* bla
+* bla
+* bla
+* blabla
+* bla
+* bla
+* * bla
+* bla
+* bla
+*
+* bla
+* bla
+* bla
+* bla
+* blabla
+* bla
+* bla
+*
+* * bla
+* bla
+* bla
+*
+* bla
+* bla
+* bla
+* bla
+* blabla
+* bla
+* bla
+*
+* * bla
+* bla
+* bla
+*
+* bla
+* bla
+* bla
+* bla
+* blabla
+* bla
+* bla
+*
+* * bla
+* bla
+* bla
+*
+* bla
+* bla
+* bla
+* bla
+* blabla
+* bla
+* bla
+* * bla
+* bla
+* bla
+*
+* bla
+* bla
+* bla
+* bla
+* blabla
+* bla
+* bla
+*
+* * bla
+* bla
+* bla
+*
+* bla
+* bla
+* bla
+* bla
+* blabla
+* bla
+* bla
+*
+* * bla
+* bla
+* bla
+*
+* bla
+* bla
+* bla
+* bla
+* blabla
+* bla
+* bla
+*
+* * bla
+* bla
+* bla
+*
+* bla
+* bla
+* bla
+* bla
+* blabla
+* bla
+* bla
+*
+And
+

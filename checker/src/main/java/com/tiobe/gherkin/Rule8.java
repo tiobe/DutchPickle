@@ -14,8 +14,10 @@ public class Rule8 extends Rule {
     }
 
     public void check(final GherkinParser.InstructionContext ctx) {
+
         // Rule Gherkin-ScenariosShouldNotBeLong: Scenario Outlines may only contain 100 steps (excluding datatables)
-        if (ctx.stepInstruction() != null && (ctx.stepInstruction().scenario() != null || ctx.stepInstruction().scenarioOutline() != null)) {
+        GherkinParser.StepInstructionContext stepInstruction = ctx.stepInstruction();
+        if (stepInstruction != null) {
             int steps = 0;
             for (GherkinParser.StepContext step : ctx.step()) {
                 final GherkinParser.StepItemContext item = step.stepItem();
@@ -24,7 +26,15 @@ public class Rule8 extends Rule {
                 }
             }
             if (steps > 100) {
-                addViolation(8, ctx, "This Scenario Outline contains " + steps + " steps");
+                String type = "";
+                if (stepInstruction.background() != null) {
+                    type = "Background";
+                } else if (stepInstruction.scenario() != null) {
+                    type = "Scenario";
+                } else if (stepInstruction.scenarioOutline() != null) {
+                    type = "Scenario Outline";
+                }
+                addViolation(8, ctx, "This " + type + " contains " + steps + " steps");
             }
         }
     }
