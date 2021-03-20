@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,7 +23,7 @@ public class RulesTests {
     public static List<Arguments> getTestFiles() {
         return IntStream.range(1, NUMBER_OF_RULES + 1)
                 .mapToObj(Integer::toString)
-                .map(x -> Arguments.of(x, RulesTests.class.getResource(String.format("/com/tiobe/gherkin/Rule%s.feature", x)).getFile()))
+                .map(x -> Arguments.of(x, new File(RulesTests.class.getResource(String.format("/com/tiobe/gherkin/Rule%s.feature", x)).getFile()).getAbsolutePath()))
                 .collect(Collectors.toUnmodifiableList());
     }
 
