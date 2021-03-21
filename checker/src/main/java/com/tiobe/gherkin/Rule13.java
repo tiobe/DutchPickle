@@ -1,6 +1,7 @@
 package com.tiobe.gherkin;
 
 import com.tiobe.antlr.GherkinParser;
+import org.antlr.v4.runtime.BufferedTokenStream;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +17,7 @@ public class Rule13 extends Rule {
         return "Don't repeat steps in Scenarios that are also part of the Background";
     }
 
-    public void check(final GherkinParser.MainContext ctx) {
+    public void check(final GherkinParser.MainContext ctx, final BufferedTokenStream tokens) {
         // first collect all Background Steps in a Feature
         final List<List<GherkinParser.StepContext>> backgroundSteps = new ArrayList<>();
         for (GherkinParser.InstructionContext instruction : ctx.instruction()) {

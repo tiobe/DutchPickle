@@ -1,6 +1,7 @@
 package com.tiobe.gherkin;
 
 import com.tiobe.antlr.GherkinParser;
+import org.antlr.v4.runtime.BufferedTokenStream;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ public class Rule14 extends Rule {
         return "Repeating setup steps of every Scenario should be part of the Background";
     }
 
-    public void check(final GherkinParser.MainContext ctx) {
+    public void check(final GherkinParser.MainContext ctx, final BufferedTokenStream tokens) {
         int numberOfCommonPrefixes = 0;
         int numberOfScenarios = 0;
         List<GherkinParser.StepContext> previousScenario = new ArrayList<>();

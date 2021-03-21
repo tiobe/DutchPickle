@@ -8,17 +8,19 @@ import java.util.List;
 
 public class GherkinListener extends GherkinBaseListener {
     private final List<Rule> rules;
+    private BufferedTokenStream tokens;
 
     public GherkinListener(final BufferedTokenStream tokens, final List<Rule> rules) {
         this.rules = rules;
         for (final Rule rule : this.rules) {
             rule.check(tokens);
         }
+        this.tokens = tokens;
     }
 
     @Override public void enterMain(final GherkinParser.MainContext ctx) {
         for (final Rule rule : rules) {
-            rule.check(ctx);
+            rule.check(ctx, tokens);
         }
     }
 

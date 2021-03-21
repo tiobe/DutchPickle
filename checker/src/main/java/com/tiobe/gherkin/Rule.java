@@ -40,11 +40,10 @@ public abstract class Rule {
     }
 
 
-
     public void check(final BufferedTokenStream tokens) {
     }
 
-    public void check(final GherkinParser.MainContext ctx) {
+    public void check(final GherkinParser.MainContext ctx, final BufferedTokenStream tokens) {
     }
 
     public void check(final GherkinParser.InstructionContext ctx) {
