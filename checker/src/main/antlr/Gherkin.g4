@@ -6,14 +6,13 @@ grammar Gherkin;
 
 // TODO
 // add other 10 checks
-// make sure it is completely build via the TICS build and published on the website
-// deployment
 // SECOND DELIVERY
 
 // rules in a separate directory with .class files to allow dynamic patching
 // make sure other charsets are handled correctly as well, see example file
 // as-you-type
 // language dependent keywords
+// go public
 
 main
     : feature description* (NL+ (instruction | datatable))* NL* EOF

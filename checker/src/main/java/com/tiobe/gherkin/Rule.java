@@ -39,7 +39,12 @@ public abstract class Rule {
         violations.add(violation);
     }
 
+
+
     public void check(final BufferedTokenStream tokens) {
+    }
+
+    public void check(final GherkinParser.MainContext ctx) {
     }
 
     public void check(final GherkinParser.InstructionContext ctx) {

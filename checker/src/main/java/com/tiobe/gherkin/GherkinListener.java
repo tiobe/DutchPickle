@@ -16,6 +16,12 @@ public class GherkinListener extends GherkinBaseListener {
         }
     }
 
+    @Override public void enterMain(final GherkinParser.MainContext ctx) {
+        for (final Rule rule : rules) {
+            rule.check(ctx);
+        }
+    }
+
     @Override public void exitInstruction(final GherkinParser.InstructionContext ctx) {
         for (final Rule rule : rules) {
             rule.check(ctx);
