@@ -10,7 +10,13 @@ DAEMON := --no-daemon # to prevent using the Gradle Daemon in CI
 GRADLE := $(CURDIR)/checker/gradlew -PSVNVERSION="$(SVNVERSION)" $(DAEMON)
 TOOL := DutchPickle
 
-.PHONY: build clean rebuild test unittest package relnotes clean_relnotes publish
+ifeq ($(OS),Windows_NT)
+	MKDIR = $(TICSSDK)\Gow\bin\mkdir
+else
+	MKDIR= mkdir
+endif
+
+.PHONY: build clean rebuild test unittest package relnotes clean_relnotes publish coveragereport
 
 all: build
 
@@ -28,10 +34,10 @@ unittest:
 	$(GRADLE) test -p checker
 
 coveragereport:
-	$(GRADLE) test jacocoTestReport
+	$(GRADLE) test jacocoTestReport -p checker
 ifneq ($(TESTCOVERAGE_RESULTDIR),)
-	$(MKDIR) "$(TESTCOVERAGE_RESULTDIR)/TICSsql"
-	cp $(TICSRULESPATH)/TICSsql/build/reports/jacoco/test/jacocoTestReport.xml "$(TESTCOVERAGE_RESULTDIR)/TICSsql/"
+	$(MKDIR) -p "$(TESTCOVERAGE_RESULTDIR)/$(TOOL)"
+	cp checker/build/reports/jacoco/test/jacocoTestReport.xml "$(TESTCOVERAGE_RESULTDIR)/$(TOOL)/"
 endif
 
 package: build
