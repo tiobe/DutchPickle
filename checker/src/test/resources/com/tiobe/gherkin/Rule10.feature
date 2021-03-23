@@ -17,7 +17,7 @@ Background: # Violation
 
 Scenario: # OK
 # some comment
-Scenario: # Violation
+Scenario: # OK, let's accept a comment, because it is too complicated for now
 Scenario: # Violation
 
 @thisisOK

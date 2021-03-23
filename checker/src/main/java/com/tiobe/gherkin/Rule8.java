@@ -1,6 +1,7 @@
 package com.tiobe.gherkin;
 
 import com.tiobe.antlr.GherkinParser;
+import org.antlr.v4.runtime.BufferedTokenStream;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public class Rule8 extends Rule {
         return "Scenarios should be short (less than 100 steps)";
     }
 
-    public void check(final GherkinParser.InstructionContext ctx) {
+    public void check(final GherkinParser.InstructionContext ctx, final BufferedTokenStream tokens) {
 
         // Rule Gherkin-ScenariosShouldNotBeLong: Scenario Outlines may only contain 100 steps (excluding datatables)
         final GherkinParser.StepInstructionContext stepInstruction = ctx.stepInstruction();

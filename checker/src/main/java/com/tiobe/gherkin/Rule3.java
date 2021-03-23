@@ -1,6 +1,7 @@
 package com.tiobe.gherkin;
 
 import com.tiobe.antlr.GherkinParser;
+import org.antlr.v4.runtime.BufferedTokenStream;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public class Rule3 extends Rule {
         return "A Given should not follow a When or a Then";
     }
 
-    public void check(final GherkinParser.InstructionContext ctx) {
+    public void check(final GherkinParser.InstructionContext ctx, final BufferedTokenStream tokens) {
         // Rule Gherkin-NoGivenAfterWhenThen: if a "Given" is after a "When" or "Then" then fire the rule
         if (ctx.stepInstruction() != null && (ctx.stepInstruction().scenario() != null || ctx.stepInstruction().scenarioOutline() != null)) {
             boolean whenOrThenFound = false;

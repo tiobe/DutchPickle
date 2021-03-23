@@ -1,6 +1,7 @@
 package com.tiobe.gherkin;
 
 import com.tiobe.antlr.GherkinParser;
+import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public class Rule9 extends Rule {
         return "There should be no empty cells in tables";
     }
 
-    public void check(final GherkinParser.DatatableContext ctx) {
+    public void check(final GherkinParser.DatatableContext ctx, final BufferedTokenStream tokens) {
         // Rule Gherkin-NoEmptyCell: There should not be empty cells in tables
         boolean violations = false;
         for (TerminalNode cell : ctx.DATATABLE()) {

@@ -8,7 +8,12 @@ grammar Gherkin;
 // add other 10 checks
 // SECOND DELIVERY
 
+// make sure there is a one button compile and test
+// rename all rules with logical rule names instead of numbers
+// all violations should be printed at the moment they are found, not collected till the end
+// number of tests run is hardcoded now, should be done automatically
 // rules in a separate directory with .class files to allow dynamic patching
+// enable JSON output
 // make sure other charsets are handled correctly as well, see example file
 // as-you-type
 // language dependent keywords

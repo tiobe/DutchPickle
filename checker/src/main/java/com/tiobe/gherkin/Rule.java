@@ -46,21 +46,21 @@ public abstract class Rule {
     public void check(final GherkinParser.MainContext ctx, final BufferedTokenStream tokens) {
     }
 
-    public void check(final GherkinParser.InstructionLineContext ctx) {
+    public void check(final GherkinParser.InstructionLineContext ctx, final BufferedTokenStream tokens) {
     }
 
-    public void check(final GherkinParser.InstructionContext ctx) {
+    public void check(final GherkinParser.InstructionContext ctx, final BufferedTokenStream tokens) {
     }
 
-    public void check(final GherkinParser.InstructionDescriptionContext ctx) {
+    public void check(final GherkinParser.InstructionDescriptionContext ctx, final BufferedTokenStream tokens) {
     }
 
-    public void check(final GherkinParser.StepDescriptionContext ctx) {
+    public void check(final GherkinParser.StepDescriptionContext ctx, final BufferedTokenStream tokens) {
     }
 
-    public void check(final GherkinParser.DescriptionContext ctx) {
+    public void check(final GherkinParser.DescriptionContext ctx, final BufferedTokenStream tokens) {
     }
 
-    public void check(final GherkinParser.DatatableContext ctx) {
+    public void check(final GherkinParser.DatatableContext ctx, final BufferedTokenStream tokens) {
     }
 }

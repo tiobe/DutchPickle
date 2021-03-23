@@ -26,37 +26,37 @@ public class GherkinListener extends GherkinBaseListener {
 
     @Override public void enterInstructionLine(final GherkinParser.InstructionLineContext ctx) {
         for (final Rule rule : rules) {
-            rule.check(ctx);
+            rule.check(ctx, tokens);
         }
     }
 
     @Override public void enterInstruction(final GherkinParser.InstructionContext ctx) {
         for (final Rule rule : rules) {
-            rule.check(ctx);
+            rule.check(ctx, tokens);
         }
     }
 
     @Override public void enterDatatable(final GherkinParser.DatatableContext ctx) {
         for (final Rule rule : rules) {
-            rule.check(ctx);
+            rule.check(ctx, tokens);
         }
     }
 
     @Override public void enterInstructionDescription(final GherkinParser.InstructionDescriptionContext ctx) {
         for (final Rule rule : rules) {
-            rule.check(ctx);
+            rule.check(ctx, tokens);
         }
     }
 
     @Override public void enterStepDescription(final GherkinParser.StepDescriptionContext ctx) {
         for (final Rule rule : rules) {
-            rule.check(ctx);
+            rule.check(ctx, tokens);
         }
     }
 
     @Override public void enterDescription(final GherkinParser.DescriptionContext ctx) {
         for (final Rule rule : rules) {
-            rule.check(ctx);
+            rule.check(ctx, tokens);
         }
     }
 }

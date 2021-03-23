@@ -1,6 +1,7 @@
 package com.tiobe.gherkin;
 
 import com.tiobe.antlr.GherkinParser;
+import org.antlr.v4.runtime.BufferedTokenStream;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class Rule1 extends Rule {
         return "A Scenario Outline should have more than one Scenario";
     }
 
-    public void check(final GherkinParser.InstructionContext ctx) {
+    public void check(final GherkinParser.InstructionContext ctx, final BufferedTokenStream tokens) {
         // Rule Gherkin-ScenarioOutlineShouldHaveMoreThanOneScenario: a Scenario Outline should contain more than one Scenario
         if (ctx.stepInstruction() != null && ctx.stepInstruction().scenarioOutline() != null) {
             int numberOfScenarios = 0;

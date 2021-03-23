@@ -1,6 +1,7 @@
 package com.tiobe.gherkin;
 
 import com.tiobe.antlr.GherkinParser;
+import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class Rule4 extends Rule {
         return "All data table headers should be used in the Scenario Outline";
     }
 
-    public void check(final GherkinParser.InstructionContext ctx) {
+    public void check(final GherkinParser.InstructionContext ctx, final BufferedTokenStream tokens) {
         // Rule Gherkin-UnusedTableHeader: All data table headers should be used in the Scenario Outline
         if (ctx.stepInstruction() != null && ctx.stepInstruction().scenarioOutline() != null) {
             // first we will collect all parameters

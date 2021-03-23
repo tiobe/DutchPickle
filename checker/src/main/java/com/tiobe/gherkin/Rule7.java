@@ -17,21 +17,21 @@ public class Rule7 extends Rule {
         return "Features files should not contain ToDo";
     }
 
-    public void check(final GherkinParser.InstructionDescriptionContext ctx) {
+    public void check(final GherkinParser.InstructionDescriptionContext ctx, final BufferedTokenStream tokens) {
         // Rule Gherkin-NoToDo: Features files should not contain ToDo
         if (isToDo(ctx.TEXT())) {
             addViolation(7, ctx);
         }
     }
 
-    public void check(final GherkinParser.StepDescriptionContext ctx) {
+    public void check(final GherkinParser.StepDescriptionContext ctx, final BufferedTokenStream tokens) {
         // Rule Gherkin-NoToDo: Features files should not contain ToDo
         if (isToDo(ctx.TEXT())) {
             addViolation(7, ctx);
         }
     }
 
-    public void check(final GherkinParser.DescriptionContext ctx) {
+    public void check(final GherkinParser.DescriptionContext ctx, final BufferedTokenStream tokens) {
         // Rule Gherkin-NoToDo: Features files should not contain ToDo
         if (isToDo(ctx.TEXT())) {
             addViolation(7, ctx);

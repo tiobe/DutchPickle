@@ -1,6 +1,7 @@
 package com.tiobe.gherkin;
 
 import com.tiobe.antlr.GherkinParser;
+import org.antlr.v4.runtime.BufferedTokenStream;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public class Rule5 extends Rule {
         return "After a Given a When should follow";
     }
 
-    public void check(final GherkinParser.InstructionContext ctx) {
+    public void check(final GherkinParser.InstructionContext ctx, final BufferedTokenStream tokens) {
         // Rule Gherkin-WhenAfterGiven: if a "Given" is not immediately followed by "Then" then fire the rule
         if (ctx.stepInstruction() != null && (ctx.stepInstruction().scenario() != null || ctx.stepInstruction().scenarioOutline() != null)) {
             boolean givenFound = false;
