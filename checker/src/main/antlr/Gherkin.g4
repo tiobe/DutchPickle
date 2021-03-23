@@ -15,11 +15,15 @@ grammar Gherkin;
 // go public
 
 main
-    : feature description* (NL+ (instruction | datatable))* NL* EOF
+    : feature description* instructionLine* NL* EOF
     ;
 
 feature
     : (NL* tagline)* NL* FEATURE
+    ;
+
+instructionLine
+    : NL+ (instruction | datatable)
     ;
 
 instruction
@@ -111,7 +115,7 @@ PARAMETER: '<' ID '>' | '"' '<' ID '>' '"' | '\'' '<' ID '>' '\'';
 fragment ID: [A-Za-z0-9/\-_.:;=+()[\],@\\?{}%& ]* [A-Za-z0-9/\-_.:;=+()[\],@\\?{}%&] [A-Za-z0-9/\-_.:;=+()[\],@\\?{}%& ]*; // ID should contain at least one non-whitespace character otherwise the trailing | with a trailing space will match
 fragment DATATABLEID: [A-Za-z0-9/\-_.:;=+()[\],<>@\\?{}%& ]* [A-Za-z0-9/\-_.:;=+()[\],<>@\\?{}%&] [A-Za-z0-9/\-_.:;=+()[\],<>@\\?{}%& ]*; // ID should contain at least one non-whitespace character otherwise the trailing | with a trailing space will match
 
-NL: [\n\r\f] ;
+NL: '\r'? '\n' ;
 
 TEXT: TOKEN+ ;
 fragment TOKEN: [!-;=-{}-~\u00A0-\u00FF] ;

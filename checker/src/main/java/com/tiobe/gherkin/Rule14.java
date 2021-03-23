@@ -19,7 +19,8 @@ public class Rule14 extends Rule {
         int numberOfCommonPrefixes = 0;
         int numberOfScenarios = 0;
         List<GherkinParser.StepContext> previousScenario = new ArrayList<>();
-        for (GherkinParser.InstructionContext instruction : ctx.instruction()) {
+        for (GherkinParser.InstructionLineContext instructionLine : ctx.instructionLine()) {
+            final GherkinParser.InstructionContext instruction = instructionLine.instruction();
             if (instruction.stepInstruction() != null && instruction.stepInstruction().scenario() != null) {
                 if (previousScenario.isEmpty()) {
                     numberOfCommonPrefixes = instruction.step().size();

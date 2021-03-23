@@ -20,14 +20,16 @@ public class Rule13 extends Rule {
     public void check(final GherkinParser.MainContext ctx, final BufferedTokenStream tokens) {
         // first collect all Background Steps in a Feature
         final List<List<GherkinParser.StepContext>> backgroundSteps = new ArrayList<>();
-        for (GherkinParser.InstructionContext instruction : ctx.instruction()) {
+        for (GherkinParser.InstructionLineContext instructionLine : ctx.instructionLine()) {
+            final GherkinParser.InstructionContext instruction = instructionLine.instruction();
             if (instruction.stepInstruction() != null && instruction.stepInstruction().background() != null) {
                 backgroundSteps.add(instruction.step());
             }
         }
 
         // then check whether every Scenario has a prefix that corresponds to a Background
-        for (GherkinParser.InstructionContext instruction : ctx.instruction()) {
+        for (GherkinParser.InstructionLineContext instructionLine : ctx.instructionLine()) {
+            final GherkinParser.InstructionContext instruction = instructionLine.instruction();
             if (instruction.stepInstruction() != null && instruction.stepInstruction().scenario() != null) {
                 for (List<GherkinParser.StepContext> steps : backgroundSteps) {
                     if (Collections.indexOfSubList(instruction.step().stream().map(x->x.getText()).collect(Collectors.toList()),
