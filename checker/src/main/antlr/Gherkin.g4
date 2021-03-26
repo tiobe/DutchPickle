@@ -16,6 +16,7 @@ grammar Gherkin;
 // enable JSON output
 // make sure other charsets are handled correctly as well, see example file
 // as-you-type
+// automated refactoring
 // language dependent keywords
 // go public
 

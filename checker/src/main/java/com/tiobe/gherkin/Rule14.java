@@ -37,7 +37,7 @@ public class Rule14 extends Rule {
         }
 
         if (numberOfScenarios > 1 && numberOfCommonPrefixes > 0) {
-            addViolation(14, ctx, "All Scenarios in this Feature share " + numberOfCommonPrefixes + " setup Steps that could be put in a Background");
+            addViolation(14, ctx, "All Scenarios in this Feature share " + numberOfCommonPrefixes + " setup Step(s) that could be put in a Background");
         }
     }
 

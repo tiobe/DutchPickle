@@ -18,37 +18,42 @@ public class Rule7 extends Rule {
     }
 
     public void check(final GherkinParser.InstructionDescriptionContext ctx, final BufferedTokenStream tokens) {
-        // Rule Gherkin-NoToDo: Features files should not contain ToDo
         if (isToDo(ctx.TEXT())) {
             addViolation(7, ctx);
         }
     }
 
     public void check(final GherkinParser.StepDescriptionContext ctx, final BufferedTokenStream tokens) {
-        // Rule Gherkin-NoToDo: Features files should not contain ToDo
         if (isToDo(ctx.TEXT())) {
             addViolation(7, ctx);
         }
     }
 
     public void check(final GherkinParser.DescriptionContext ctx, final BufferedTokenStream tokens) {
-        // Rule Gherkin-NoToDo: Features files should not contain ToDo
         if (isToDo(ctx.TEXT())) {
             addViolation(7, ctx);
         }
     }
 
     private static boolean isToDo(final TerminalNode text) {
-        return text != null ? text.getText().trim().equalsIgnoreCase("todo") : false;
+        return text != null ? isToDo(text.getText()) : false;
+    }
+
+    private static boolean isToDo(final String text) {
+        for (String part : text.split("\\W")) {
+            if (part.equalsIgnoreCase("todo")) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void check(final BufferedTokenStream tokens) {
         for (Token token : tokens.getTokens()) {
             if (token.getType() == GherkinLexer.COMMENT || token.getType() == GherkinLexer.DOCSTRING1 || token.getType() == GherkinLexer.DOCSTRING2) {
-                for (String part : token.getText().split("\\W")) {
-                    if (part.equalsIgnoreCase("todo")) {
-                        addViolation(7, token.getLine(), token.getCharPositionInLine());
-                    }
+                if (isToDo(token.getText())) {
+                    addViolation(7, token.getLine(), token.getCharPositionInLine());
                 }
             }
         }
