@@ -4,9 +4,7 @@ import com.tiobe.antlr.GherkinParser;
 import org.antlr.v4.runtime.BufferedTokenStream;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Rule13 extends Rule {
     public Rule13(final List<Violation> violations) {
@@ -22,7 +20,7 @@ public class Rule13 extends Rule {
         final List<List<GherkinParser.StepContext>> backgroundSteps = new ArrayList<>();
         for (GherkinParser.InstructionLineContext instructionLine : ctx.instructionLine()) {
             final GherkinParser.InstructionContext instruction = instructionLine.instruction();
-            if (instruction.stepInstruction() != null && instruction.stepInstruction().background() != null) {
+            if (instruction != null && instruction.stepInstruction() != null && instruction.stepInstruction().background() != null) {
                 backgroundSteps.add(instruction.step());
             }
         }
@@ -30,14 +28,30 @@ public class Rule13 extends Rule {
         // then check whether every Scenario has a prefix that corresponds to a Background
         for (GherkinParser.InstructionLineContext instructionLine : ctx.instructionLine()) {
             final GherkinParser.InstructionContext instruction = instructionLine.instruction();
-            if (instruction.stepInstruction() != null && instruction.stepInstruction().scenario() != null) {
-                for (List<GherkinParser.StepContext> steps : backgroundSteps) {
-                    if (Collections.indexOfSubList(instruction.step().stream().map(x->x.getText()).collect(Collectors.toList()),
-                            steps.stream().map(x->x.getText()).collect(Collectors.toList())) == 0) {
-                        addViolation(13, instruction.stepInstruction().scenario());
+            if (instruction != null && instruction.stepInstruction() != null && instruction.stepInstruction().scenario() != null) {
+                for (List<GherkinParser.StepContext> bSteps : backgroundSteps) {
+                    int index = 0;
+                    for (GherkinParser.StepContext bStep : bSteps) {
+                        if (index < instruction.step().size() && instruction.step().get(index).getText().equals(bStep.getText())) {
+                            index++;
+                        } else {
+                            break; // nothing to do any more because there is no common prefix
+                        }
+                    }
+                    if (index == bSteps.size()) {
+                        for (GherkinParser.StepContext step : instruction.step().subList(0, index)) {
+                            addViolation(13, step, "The Step '" + getText(step, tokens) + "' is already executed by the Background");
+                        }
                     }
                 }
             }
         }
     }
+
+
+
+    private String getText(final GherkinParser.StepContext step, final BufferedTokenStream tokens) {
+        return tokens.getText(step.start, step.stop);
+    }
+
 }

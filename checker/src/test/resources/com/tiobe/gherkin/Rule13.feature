@@ -5,10 +5,10 @@ Given this and that
 When x
 Then y
 
-Scenario: # Violation
-Given this and that
-When x
-Then y
+Scenario:
+Given this and that # Violation
+When x # Violation
+Then y # Violation
 And z
 
 Scenario: # OK

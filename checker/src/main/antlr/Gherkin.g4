@@ -89,7 +89,7 @@ BOMUTF8 : '\u00EF\u00BB\u00BF' -> skip ;
 
 BOMUTF16 : '\uFEFF' -> skip ;
 
-WHITESPACE: [ \t] -> skip ;
+WHITESPACE: [ \t] -> channel(HIDDEN) ;
 
 COMMENT: '#' ~[\r\n\f]* -> channel(HIDDEN) ;
 
