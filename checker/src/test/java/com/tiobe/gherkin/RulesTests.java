@@ -13,13 +13,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RulesTests {
-    static final int NUMBER_OF_RULES = 14; // TODO: derive this number automatically
+    static final int NUMBER_OF_RULES = 15; // TODO: derive this number automatically
     public static List<Arguments> getTestFiles() {
         return IntStream.range(1, NUMBER_OF_RULES + 1)
                 .mapToObj(Integer::toString)
@@ -32,7 +34,8 @@ public class RulesTests {
         for (int i = 0; i < lines.size(); i++) {
             final String line = lines.get(i);
             final int lineNumber = i + 1;
-            if (line.contains("# Violation")) {
+            final Matcher matcher = Pattern.compile("# Violation").matcher(line);
+            while (matcher.find()) {
                 lineNumbers.add(lineNumber);
             }
         }

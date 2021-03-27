@@ -1,6 +1,7 @@
 package com.tiobe.gherkin;
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class Violation {
     private final Rule rule;
@@ -14,6 +15,10 @@ public class Violation {
 
     Violation(final Rule rule, final ParserRuleContext ctx, final String extraMessage) {
         this(rule, ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine(), extraMessage);
+    }
+
+    Violation(final Rule rule, final TerminalNode node, final String extraMessage) {
+        this(rule, node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), extraMessage);
     }
 
     Violation(final Rule rule, final int lineNumber, final int columnNumber) {

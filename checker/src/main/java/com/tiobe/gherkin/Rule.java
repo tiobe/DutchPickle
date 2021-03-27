@@ -3,6 +3,7 @@ package com.tiobe.gherkin;
 import com.tiobe.antlr.GherkinParser;
 import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.List;
 
@@ -25,6 +26,10 @@ public abstract class Rule {
 
     protected void addViolation(final int ruleID, final ParserRuleContext ctx, final String extraMessage) {
         addViolation(new Violation(this, ctx, extraMessage));
+    }
+
+    protected void addViolation(final int ruleID, final TerminalNode node, final String extraMessage) {
+        addViolation(new Violation(this, node, extraMessage));
     }
 
     protected void addViolation(final int ruleID, final int lineNumber, final int columnNumber) {
@@ -52,6 +57,12 @@ public abstract class Rule {
     public void check(final GherkinParser.InstructionContext ctx, final BufferedTokenStream tokens) {
     }
 
+    public void check(final GherkinParser.DatatableContext ctx, final BufferedTokenStream tokens) {
+    }
+
+    public void check(final GherkinParser.StepContext ctx, final BufferedTokenStream tokens) {
+    }
+
     public void check(final GherkinParser.InstructionDescriptionContext ctx, final BufferedTokenStream tokens) {
     }
 
@@ -61,6 +72,4 @@ public abstract class Rule {
     public void check(final GherkinParser.DescriptionContext ctx, final BufferedTokenStream tokens) {
     }
 
-    public void check(final GherkinParser.DatatableContext ctx, final BufferedTokenStream tokens) {
-    }
 }
