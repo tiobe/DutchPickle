@@ -10,15 +10,22 @@ grammar Gherkin;
 
 // make sure there is a one button compile and test
 // rename all rules with logical rule names instead of numbers
-// all violations should be printed at the moment they are found, not collected till the end
+// documentation for rules
+// refer to rules from documentation
+// nice integration in most common IDE
 // number of tests run is hardcoded now, should be done automatically
+// roll out within Philips
+// nice integration in 2nd most common IDE
+// all violations should be printed at the moment they are found, not collected till the end
+// nice integration in 3rd most common IDE
+// roll out within TIOBE customer base
 // rules in a separate directory with .class files to allow dynamic patching
 // enable JSON output
 // make sure other charsets are handled correctly as well, see example file
 // as-you-type
+// go public
 // automated refactoring
 // language dependent keywords
-// go public
 
 main
     : feature description* instructionLine* NL* EOF

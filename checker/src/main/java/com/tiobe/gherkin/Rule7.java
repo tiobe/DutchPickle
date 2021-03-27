@@ -35,6 +35,16 @@ public class Rule7 extends Rule {
         }
     }
 
+    public void check(final BufferedTokenStream tokens) {
+        for (Token token : tokens.getTokens()) {
+            if (token.getType() == GherkinLexer.COMMENT || token.getType() == GherkinLexer.DOCSTRING1 || token.getType() == GherkinLexer.DOCSTRING2) {
+                if (isToDo(token.getText())) {
+                    addViolation(7, token.getLine(), token.getCharPositionInLine());
+                }
+            }
+        }
+    }
+
     private static boolean isToDo(final TerminalNode text) {
         return text != null ? isToDo(text.getText()) : false;
     }
@@ -49,13 +59,4 @@ public class Rule7 extends Rule {
         return false;
     }
 
-    public void check(final BufferedTokenStream tokens) {
-        for (Token token : tokens.getTokens()) {
-            if (token.getType() == GherkinLexer.COMMENT || token.getType() == GherkinLexer.DOCSTRING1 || token.getType() == GherkinLexer.DOCSTRING2) {
-                if (isToDo(token.getText())) {
-                    addViolation(7, token.getLine(), token.getCharPositionInLine());
-                }
-            }
-        }
-    }
 }
