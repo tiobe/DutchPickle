@@ -15,8 +15,6 @@ public class Rule8 extends Rule {
     }
 
     public void check(final GherkinParser.InstructionContext ctx, final BufferedTokenStream tokens) {
-
-        // Rule Gherkin-ScenariosShouldNotBeLong: Scenario Outlines may only contain 100 steps (excluding datatables)
         final GherkinParser.StepInstructionContext stepInstruction = ctx.stepInstruction();
         if (stepInstruction != null) {
             int steps = 0;

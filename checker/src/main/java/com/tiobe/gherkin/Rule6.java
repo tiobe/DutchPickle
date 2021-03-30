@@ -15,7 +15,6 @@ public class Rule6 extends Rule {
     }
 
     public void check(final GherkinParser.InstructionContext ctx, final BufferedTokenStream tokens) {
-        // Rule Gherkin-NoSubsequentGivenWhenThen: Subsequent Givens, Whens, and/or Thens are not allowed (use And or But)
         if (ctx.stepInstruction() != null && (ctx.stepInstruction().scenario() != null || ctx.stepInstruction().scenarioOutline() != null)) {
             boolean givenFound = false;
             boolean whenFound = false;

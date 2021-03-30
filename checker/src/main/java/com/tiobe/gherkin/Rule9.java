@@ -16,7 +16,6 @@ public class Rule9 extends Rule {
     }
 
     public void check(final GherkinParser.DatatableContext ctx, final BufferedTokenStream tokens) {
-        // Rule Gherkin-NoEmptyCell: There should not be empty cells in tables
         boolean violations = false;
         for (TerminalNode cell : ctx.DATATABLE()) {
             // last cell is always empty according to the parse tree, so that one should not be reported (i.e. the first occurrence is skipped)

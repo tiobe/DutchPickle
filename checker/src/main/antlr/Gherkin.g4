@@ -12,6 +12,7 @@ grammar Gherkin;
 // rename all rules with logical rule names instead of numbers
 // documentation for rules
 // refer to rules from documentation
+// create a generic function to match lexer tokens, see rule 11 and rule 18
 // nice integration in most common IDE
 // number of tests run is hardcoded now, should be done automatically
 // roll out within Philips
@@ -96,7 +97,7 @@ BOMUTF8 : '\u00EF\u00BB\u00BF' -> skip ;
 
 BOMUTF16 : '\uFEFF' -> skip ;
 
-WHITESPACE: [ \t] -> channel(HIDDEN) ;
+WHITESPACE: [ \t]+ -> channel(HIDDEN) ;
 
 COMMENT: '#' ~[\r\n\f]* -> channel(HIDDEN) ;
 

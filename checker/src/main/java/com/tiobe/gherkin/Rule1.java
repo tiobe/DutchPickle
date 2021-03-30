@@ -16,7 +16,6 @@ public class Rule1 extends Rule {
     }
 
     public void check(final GherkinParser.InstructionContext ctx, final BufferedTokenStream tokens) {
-        // Rule Gherkin-ScenarioOutlineShouldHaveMoreThanOneScenario: a Scenario Outline should contain more than one Scenario
         if (ctx.stepInstruction() != null && ctx.stepInstruction().scenarioOutline() != null) {
             int numberOfScenarios = 0;
             boolean examplesContext = false;

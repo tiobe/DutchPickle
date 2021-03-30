@@ -48,8 +48,6 @@ public class Rule13 extends Rule {
         }
     }
 
-
-
     private String getText(final GherkinParser.StepContext step, final BufferedTokenStream tokens) {
         return tokens.getText(step.start, step.stop);
     }

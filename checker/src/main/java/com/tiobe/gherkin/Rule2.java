@@ -16,7 +16,6 @@ public class Rule2 extends Rule {
     }
 
     public void check(final GherkinParser.InstructionContext ctx, final BufferedTokenStream tokens) {
-        // Rule Gherkin-ThenAfterWhen: if a "When" is not immediately followed by "Then" then fire the rule
         if (ctx.stepInstruction() != null && (ctx.stepInstruction().scenario() != null || ctx.stepInstruction().scenarioOutline() != null)) {
             boolean whenFound = false;
             int lineNumber = 0;

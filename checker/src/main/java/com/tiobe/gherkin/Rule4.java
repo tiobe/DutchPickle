@@ -19,7 +19,6 @@ public class Rule4 extends Rule {
     }
 
     public void check(final GherkinParser.InstructionContext ctx, final BufferedTokenStream tokens) {
-        // Rule Gherkin-UnusedTableHeader: All data table headers should be used in the Scenario Outline
         if (ctx.stepInstruction() != null && ctx.stepInstruction().scenarioOutline() != null) {
             // first we will collect all parameters
             final List<String> parameters = new ArrayList<>();

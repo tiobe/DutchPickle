@@ -15,7 +15,6 @@ public class Rule3 extends Rule {
     }
 
     public void check(final GherkinParser.InstructionContext ctx, final BufferedTokenStream tokens) {
-        // Rule Gherkin-NoGivenAfterWhenThen: if a "Given" is after a "When" or "Then" then fire the rule
         if (ctx.stepInstruction() != null && (ctx.stepInstruction().scenario() != null || ctx.stepInstruction().scenarioOutline() != null)) {
             boolean whenOrThenFound = false;
             for (GherkinParser.StepContext step : ctx.step()) {
