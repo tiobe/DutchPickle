@@ -21,7 +21,7 @@ import java.util.stream.IntStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RulesTests {
-    static final int NUMBER_OF_RULES = 18; // TODO: derive this number automatically
+    static final int NUMBER_OF_RULES = 19; // TODO: derive this number automatically
     public static List<Arguments> getTestFiles() {
         return IntStream.range(1, NUMBER_OF_RULES + 1)
                 .mapToObj(Integer::toString)

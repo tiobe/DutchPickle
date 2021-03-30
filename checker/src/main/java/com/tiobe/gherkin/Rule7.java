@@ -58,5 +58,4 @@ public class Rule7 extends Rule {
 
         return false;
     }
-
 }
