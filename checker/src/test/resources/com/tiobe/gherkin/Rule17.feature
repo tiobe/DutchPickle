@@ -6,18 +6,24 @@ Given something
 
 Then bla
 
-| bla | bla | blaeeee | # not yet Violation
-| bla | bla | xasd |
+| bla | bla | blaeeee |
+| bla | bla | xasd | # Violation
 
 Examples:
-| that's OK | but this    | # OK
-| that's OK | but this not|
+| thats OK | but this    | # OK
+| thats OK | but this not| # Violation
 
 Examples:
-| that's OK | but this     | # OK
-| that's OK | but this not |
+| thats OK | but this     | # OK
+| thats OK | but this not |
 
 Examples:
-| that's OK | but this     | # not yet Violation
-| that's | but this not |
+| thats OK | but this     |
+| thats | but this not | # Violation
+
+Examples:
+|this is wrong        | bla | # Violation
+| this is OK          | bla | # OK
+|       this is not OK| bla | # Violation
+| this is also not OK |  bla| # Violation
 

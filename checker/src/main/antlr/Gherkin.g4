@@ -8,14 +8,20 @@ grammar Gherkin;
 // add other 10 checks
 // SECOND DELIVERY
 
+// nice integration in most common IDE: output warning table, Visual Studio 
 // make sure there is a one button compile and test
-// rename all rules with logical rule names instead of numbers
-// documentation for rules
-// refer to rules from documentation
-// create a generic function to match lexer tokens, see rule 11 and rule 18
-// nice integration in most common IDE
-// number of tests run is hardcoded now, should be done automatically
+// Organize demo with SCoE
+// documentation reference from dashboard
+// create a generic function to match lexer tokens, see rule 11, rule 17, and rule 18
 // roll out within Philips
+// New rule: Scenario outline should not contain multiple instances of same scenarios (so all variables are same between two rows)   
+// New rule: Variable should have more than 1 value in the example tables (if it’s the same for all scenarios it’s not a variable anymore)   
+// rename all rules with logical rule names instead of numbers
+// number of tests run is hardcoded now, should be done automatically
+// integrate with C# code and add following 3 new rules:
+// C# related rule: Don't use punctiation in the steps (no '.' nor ',', escpcially inline, that could mean abbreviations) 
+// C# related rule: Don't use camelCasing nor PascalCasing (in fact all capitals should be avoided), excluding parameters
+// C# related rule: No comma separated values in table cells (use multiple cells for multiple values)
 // nice integration in 2nd most common IDE
 // all violations should be printed at the moment they are found, not collected till the end
 // nice integration in 3rd most common IDE
