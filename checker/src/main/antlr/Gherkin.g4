@@ -5,15 +5,12 @@ grammar Gherkin;
 // PARSER
 
 // TODO
-// add other 10 checks
-// SECOND DELIVERY
 
-// nice integration in most common IDE: output warning table, Visual Studio 
-// make sure there is a one button compile and test
-// Organize demo with SCoE
-// documentation reference from dashboard
+// documentation reference from dashboard: mention Ramon, Rashmi, Bart and Rob
+// Organize demo with SCoE (wait for feedback Rob Jansen: rules + Visual Studio)
 // create a generic function to match lexer tokens, see rule 11, rule 17, and rule 18
-// roll out within Philips
+// add version number to the tool, i.e. -v option
+// roll out within Philips worldwide (inform Ramon, go to all projects) + Vanderlande
 // New rule: Scenario outline should not contain multiple instances of same scenarios (so all variables are same between two rows)   
 // New rule: Variable should have more than 1 value in the example tables (if it’s the same for all scenarios it’s not a variable anymore)   
 // rename all rules with logical rule names instead of numbers
@@ -24,12 +21,14 @@ grammar Gherkin;
 // C# related rule: No comma separated values in table cells (use multiple cells for multiple values)
 // nice integration in 2nd most common IDE
 // all violations should be printed at the moment they are found, not collected till the end
+// think about a logo (Dutch pickle on wooden shoes and wind mill on its head)
 // nice integration in 3rd most common IDE
 // roll out within TIOBE customer base
 // rules in a separate directory with .class files to allow dynamic patching
 // enable JSON output
 // make sure other charsets are handled correctly as well, see example file
 // as-you-type
+// being able to distribute DutchPickle without TiCS
 // go public
 // automated refactoring
 // language dependent keywords
@@ -133,7 +132,7 @@ WHEN: 'When' ;
 TAG: '@' TEXT ;
 PARAMETER: '<' ID '>' | '"' '<' ID '>' '"' | '\'' '<' ID '>' '\'';
 fragment ID: [A-Za-z0-9/\-_.:;=+()[\],@\\?{}%& ]* [A-Za-z0-9/\-_.:;=+()[\],@\\?{}%&] [A-Za-z0-9/\-_.:;=+()[\],@\\?{}%& ]*; // ID should contain at least one non-whitespace character otherwise the trailing | with a trailing space will match
-fragment DATATABLEID: [A-Za-z0-9/\-_.:;=+()[\],<>@\\?{}%& ]* [A-Za-z0-9/\-_.:;=+()[\],<>@\\?{}%&] [A-Za-z0-9/\-_.:;=+()[\],<>@\\?{}%& ]*; // ID should contain at least one non-whitespace character otherwise the trailing | with a trailing space will match
+fragment DATATABLEID: [A-Za-z0-9/\-_.:;=+()[\],<>@\\?{}%&"' ]* [A-Za-z0-9/\-_.:;=+()[\],<>@\\?{}%&"'] [A-Za-z0-9/\-_.:;=+()[\],<>@\\?{}%&"' ]*; // ID should contain at least one non-whitespace character otherwise the trailing | with a trailing space will match
 
 NL: '\r'? '\n' ;
 

@@ -7,3 +7,6 @@ When oops a   double space # Violation
 | we have   table | here | # OK
 But what about double tab       like this # Violation
 And   double space at the beginning # Violation
+Scenarios:
+    | this works  | "this not"  | # OK, PR27961
+
