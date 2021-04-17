@@ -19,5 +19,10 @@ When foo # Violation
 Examples:
 | x | y |
 
+Scenario Outline: PR27975
+Given bla # Violation
+When foo # Violation
+Then something else
+
 
 

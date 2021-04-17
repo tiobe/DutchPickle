@@ -19,16 +19,16 @@ public class Rule14 extends Rule {
         // first collect all Steps
         for (GherkinParser.InstructionLineContext instructionLine : ctx.instructionLine()) {
             final GherkinParser.InstructionContext instruction = instructionLine.instruction();
-            if (instruction != null && instruction.stepInstruction() != null && instruction.stepInstruction().scenario() != null) {
+            if (instruction != null && instruction.stepInstruction() != null
+                    && (instruction.stepInstruction().scenario() != null || instruction.stepInstruction().scenarioOutline() != null)) {
                 commonSteps.add(instruction.step());
             }
         }
 
         // then determine the number of common prefixes and loop over the Steps to trigger a violation
-        if (commonSteps != null && commonSteps.size() > 1) {
+        if (commonSteps.size() > 1) {
             for (List<GherkinParser.StepContext> steps : commonSteps) {
                 for (int index = 0; index < numberOfCommonPrefixes(); index++) {
-
                     addViolation(14, steps.get(index), "Step '" + getText(steps.get(index), tokens) + "' is the same Step as used in all other Scenarios, so it could be put in a Background");
                 }
             }
@@ -61,5 +61,5 @@ public class Rule14 extends Rule {
     }
 
     // repeatedSteps keeps track of the list of common Steps *per Scenario*
-    private List<List<GherkinParser.StepContext>> commonSteps = new ArrayList<>();
+    private final List<List<GherkinParser.StepContext>> commonSteps = new ArrayList<>();
 }
