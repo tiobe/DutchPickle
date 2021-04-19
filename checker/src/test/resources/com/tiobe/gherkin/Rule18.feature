@@ -8,5 +8,6 @@ When oops a   double space # Violation
 But what about double tab       like this # Violation
 And   double space at the beginning # Violation
 Scenarios:
-    | this works  | "this not"  | # OK, PR27961
+    | this works  | "this not"  | # OK PR27961
+    |  this is an issue | this ok | # Violation CR27983
 

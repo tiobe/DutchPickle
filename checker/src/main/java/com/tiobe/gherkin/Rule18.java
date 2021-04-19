@@ -3,6 +3,7 @@ package com.tiobe.gherkin;
 import com.tiobe.antlr.GherkinParser;
 import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +20,21 @@ public class Rule18 extends Rule {
 
     public void check(final GherkinParser.StepContext ctx, final BufferedTokenStream tokens) {
         if (ctx.description() != null) {
-            for (GherkinParser.DescriptionContext description : ctx.description()) {
+            for (final GherkinParser.DescriptionContext description : ctx.description()) {
                 final List<Token> doubleSpaceTokens = getDoubleSpaceTokens(description, tokens);
-                for (Token token : doubleSpaceTokens) {
+                for (final Token token : doubleSpaceTokens) {
                     addViolation(18, token.getLine(), token.getCharPositionInLine()+1, "Double space encountered");
+                }
+            }
+        }
+        checkDataTableCells(ctx);
+    }
+
+    private void checkDataTableCells(final GherkinParser.StepContext ctx) {
+        if (ctx.stepItem() != null && ctx.stepItem().datatable() != null) {
+            for (final TerminalNode node : ctx.stepItem().datatable().DATATABLE()) {
+                if (node.getText().matches("\\|\\s\\s.*")) {
+                    addViolation(18, node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), "Double space encountered at the beginning of a data table cell");
                 }
             }
         }
@@ -36,7 +48,7 @@ public class Rule18 extends Rule {
         for (int i = begin; i <= end; i++) {
             final List<Token> hiddenTokens = tokens.getHiddenTokensToLeft(i);
             if (hiddenTokens != null) {
-                for (Token token : hiddenTokens) {
+                for (final Token token : hiddenTokens) {
                     final String text = token.getText();
                     // check whether it concerns a double space
                     if (Pattern.matches(".*\\s\\s.*", text)) {

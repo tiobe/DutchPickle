@@ -1,7 +1,7 @@
 Feature: 
 
 Scenario Outline:
-
+When <bla>
 | bla | bla | bla | # OK
 | bla | bla | bla | # OK
 
@@ -12,7 +12,7 @@ Examples:
 
 
 Scenario Outline:
-
+When <bla>
 | bla | | bla | # Violation
 | bla | bla | bla | # OK
 
