@@ -12,15 +12,15 @@ public class Rule19 extends Rule {
     }
 
     public String getSynopsis() {
-        return "A comment should not start with a Gherkin keyword";
+        return "A comment should not start with a Step keyword";
     }
 
     public void check(final BufferedTokenStream tokens) {
         for (Token token : tokens.getTokens()) {
             if (token.getType() == GherkinLexer.COMMENT || token.getType() == GherkinLexer.DOCSTRING1 || token.getType() == GherkinLexer.DOCSTRING2) {
-                if (token.getText().matches("^#\\s*(Given|When|Then|And|But).*")
-                        || token.getText().matches("(?s)```\\s*(Given|When|Then|And|But).*")
-                        || token.getText().matches("(?s)\"\"\"\\s*(Given|When|Then|And|But).*")) {
+                if (token.getText().matches("^#\\s*(Given|When|Then|And|But|\\*).*")
+                        || token.getText().matches("(?s)```\\s*(Given|When|Then|And|But|\\*).*")
+                        || token.getText().matches("(?s)\"\"\"\\s*(Given|When|Then|And|But|\\*).*")) {
                     addViolation(19, token.getLine(), token.getCharPositionInLine());
                 }
             }

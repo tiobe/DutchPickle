@@ -15,6 +15,7 @@ grammar Gherkin;
 // New rule: Variable should have more than 1 value in the example tables (if it’s the same for all scenarios it’s not a variable anymore)   
 // rename all rules with logical rule names instead of numbers
 // number of tests run is hardcoded now, should be done automatically
+// Extend rule: "A comment should not start with a Step keyword" to all keywords or at least Scenario, tags, etc
 // integrate with C# code and add following 3 new rules:
 // C# related rule: Don't use punctiation in the steps (no '.' nor ',', escpcially inline, that could mean abbreviations) 
 // C# related rule: Don't use camelCasing nor PascalCasing (in fact all capitals should be avoided), excluding parameters
