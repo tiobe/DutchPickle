@@ -1,3 +1,4 @@
+// Copyright 2021, TIOBE Software B.V.
 package com.tiobe.gherkin;
 
 import com.google.gson.Gson;

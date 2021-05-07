@@ -21,45 +21,49 @@ public class Rule14 extends Rule {
             final GherkinParser.InstructionContext instruction = instructionLine.instruction();
             if (instruction != null && instruction.stepInstruction() != null
                     && (instruction.stepInstruction().scenario() != null || instruction.stepInstruction().scenarioOutline() != null)) {
-                commonSteps.add(instruction.step());
+                allSteps.add(instruction.step());
             }
         }
 
         // then determine the number of common prefixes and loop over the Steps to trigger a violation
-        if (commonSteps.size() > 1) {
-            for (List<GherkinParser.StepContext> steps : commonSteps) {
-                for (int index = 0; index < numberOfCommonPrefixes(); index++) {
+        if (allSteps.size() > 1) {
+            for (List<GherkinParser.StepContext> steps : allSteps) {
+                for (int index = 0; index < numberOfCommonGivens(); index++) {
                     addViolation(14, steps.get(index), "Step '" + getText(steps.get(index), tokens) + "' is the same Step as used in all other Scenarios, so it could be put in a Background");
                 }
             }
         }
     }
 
-    private int numberOfCommonPrefixes() {
-        for (int numberOfCommonPrefixes = 0; ; numberOfCommonPrefixes++) {
+    private int numberOfCommonGivens() {
+        for (int numberOfCommonGivens = 0; ; numberOfCommonGivens++) {
             String commonStep = "";
-            for (List<GherkinParser.StepContext> steps : commonSteps) {
+            for (final List<GherkinParser.StepContext> steps : allSteps) {
 
-                // running out of Steps
-                if (steps.size() == numberOfCommonPrefixes) {
-                    return numberOfCommonPrefixes;
+                // running out of Given steps
+                if (steps.size() == numberOfCommonGivens || !isGivenStep(steps.get(numberOfCommonGivens).stepItem())) {
+                    return numberOfCommonGivens;
 
                 // first Scenario
                 } else if (commonStep.isEmpty()) {
-                    commonStep = steps.get(numberOfCommonPrefixes).getText();
+                    commonStep = steps.get(numberOfCommonGivens).getText();
 
                 // no common prefix
-                } else if (!steps.get(numberOfCommonPrefixes).getText().equals(commonStep)) {
-                    return numberOfCommonPrefixes;
+                } else if (!steps.get(numberOfCommonGivens).getText().equals(commonStep)) {
+                    return numberOfCommonGivens;
                 }
             }
         }
+    }
+
+    private boolean isGivenStep(final GherkinParser.StepItemContext stepItem) {
+        return stepItem.and() != null || stepItem.anystep() != null || stepItem.but() != null || stepItem.given() != null;
     }
 
     private String getText(final GherkinParser.StepContext step, final BufferedTokenStream tokens) {
         return tokens.getText(step.start, step.stop);
     }
 
-    // repeatedSteps keeps track of the list of common Steps *per Scenario*
-    private final List<List<GherkinParser.StepContext>> commonSteps = new ArrayList<>();
+    // allSteps contains the list of Steps *per Scenario*
+    private final List<List<GherkinParser.StepContext>> allSteps = new ArrayList<>();
 }

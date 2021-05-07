@@ -17,14 +17,7 @@ public class Rule13 extends Rule {
 
     public void check(final GherkinParser.MainContext ctx, final BufferedTokenStream tokens) {
         // first collect all Background Steps in a Feature
-        final List<List<GherkinParser.StepContext>> backgroundSteps = new ArrayList<>();
-        for (GherkinParser.InstructionLineContext instructionLine : ctx.instructionLine()) {
-            final GherkinParser.InstructionContext instruction = instructionLine.instruction();
-            if (instruction != null && instruction.stepInstruction() != null && instruction.stepInstruction().background() != null) {
-                backgroundSteps.add(instruction.step());
-            }
-        }
-
+        final List<List<GherkinParser.StepContext>> backgroundSteps = collectAllBackGroundSteps(ctx);
         // then check whether every Scenario has a prefix that corresponds to a Background
         for (GherkinParser.InstructionLineContext instructionLine : ctx.instructionLine()) {
             final GherkinParser.InstructionContext instruction = instructionLine.instruction();
@@ -46,6 +39,17 @@ public class Rule13 extends Rule {
                 }
             }
         }
+    }
+
+    private List<List<GherkinParser.StepContext>> collectAllBackGroundSteps(final GherkinParser.MainContext ctx) {
+        final List<List<GherkinParser.StepContext>> backgroundSteps = new ArrayList<>();
+        for (GherkinParser.InstructionLineContext instructionLine : ctx.instructionLine()) {
+            final GherkinParser.InstructionContext instruction = instructionLine.instruction();
+            if (instruction != null && instruction.stepInstruction() != null && instruction.stepInstruction().background() != null) {
+                backgroundSteps.add(instruction.step());
+            }
+        }
+        return backgroundSteps;
     }
 
     private String getText(final GherkinParser.StepContext step, final BufferedTokenStream tokens) {
