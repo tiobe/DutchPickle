@@ -39,17 +39,18 @@ public class Rule14 extends Rule {
         for (int numberOfCommonGivens = 0; ; numberOfCommonGivens++) {
             String commonStep = "";
             for (final List<GherkinParser.StepContext> steps : allSteps) {
+                final GherkinParser.StepContext currentStep = steps.get(numberOfCommonGivens);
 
-                // running out of Given steps
-                if (steps.size() == numberOfCommonGivens || !isGivenStep(steps.get(numberOfCommonGivens).stepItem())) {
+                // running out of Given steps without parameters
+                if (steps.size() == numberOfCommonGivens || !isGivenStep(currentStep.stepItem()) || containsParameter(currentStep)) {
                     return numberOfCommonGivens;
 
                 // first Scenario
                 } else if (commonStep.isEmpty()) {
-                    commonStep = steps.get(numberOfCommonGivens).getText();
+                    commonStep = currentStep.getText();
 
                 // no common prefix
-                } else if (!steps.get(numberOfCommonGivens).getText().equals(commonStep)) {
+                } else if (!currentStep.getText().equals(commonStep)) {
                     return numberOfCommonGivens;
                 }
             }
@@ -58,6 +59,10 @@ public class Rule14 extends Rule {
 
     private boolean isGivenStep(final GherkinParser.StepItemContext stepItem) {
         return stepItem.and() != null || stepItem.anystep() != null || stepItem.but() != null || stepItem.given() != null;
+    }
+
+    private boolean containsParameter(final GherkinParser.StepContext step) {
+        return step.description().stream().anyMatch(x -> x.PARAMETER() != null);
     }
 
     private String getText(final GherkinParser.StepContext step, final BufferedTokenStream tokens) {

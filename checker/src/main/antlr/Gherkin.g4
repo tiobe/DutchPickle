@@ -11,6 +11,7 @@ grammar Gherkin;
 // create a generic function to match lexer tokens, see rule 11, rule 17, and rule 18
 // add version number to the tool, i.e. -v option
 // roll out within Philips worldwide (inform Ramon, go to all projects) + Vanderlande
+// New rule: Backgrounds should only contain givens and no parameters
 // New rule: Scenario outline should not contain multiple instances of same scenarios (so all variables are same between two rows)   
 // New rule: Variable should have more than 1 value in the example tables (if it’s the same for all scenarios it’s not a variable anymore)   
 // rename all rules with logical rule names instead of numbers
