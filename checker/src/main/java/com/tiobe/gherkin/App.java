@@ -1,7 +1,6 @@
 // Copyright 2021, TIOBE Software B.V.
 package com.tiobe.gherkin;
 
-import com.google.gson.Gson;
 import com.tiobe.antlr.GherkinLexer;
 import com.tiobe.antlr.GherkinParser;
 import org.antlr.v4.runtime.CharStream;
@@ -13,12 +12,11 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class App {
     private static String FILENAME;
-    private static boolean jsonOutput = false;
+    private static final boolean jsonOutput = false;
 
     public static List<Violation> getViolations(final String filename, final List<String> ruleNames) throws IOException {
         final CharStream charStream = CharStreams.fromFileName(filename);
@@ -64,16 +62,17 @@ public class App {
         String filename = "";
 
         if (args.length == 0) {
-            System.out.println("No argument provided, use 'DutchPickle { --rule<digits> }* <inputfile>.feature'");
+            System.out.println("No argument provided, use 'DutchPickle (--version | { --rule<digits> }* <inputfile>.feature)'");
             System.exit(1);
         }
         for (String arg : args) {
             if (arg.startsWith("--rule")) {
                 ruleNames.add(String.format("Rule%s", (arg.substring(arg.lastIndexOf('e') + 1))));
-            } else if (arg.equals("--format=json")) {
-                //jsonOutput = true; // TODO: re-enable when JSON output works
             } else if (arg.toLowerCase().endsWith(".feature")) {
                 filename = arg;
+            } else if (arg.equals("--version")) {
+                System.out.println("DutchPickle version 1.0, Copyright 2021, TIOBE Software B.V.");
+                System.exit(1);
             } else {
                 System.out.println("Unknown option '" + arg + "' encountered, please run without arguments for help");
                 System.exit(1);
@@ -86,15 +85,10 @@ public class App {
         }
 
         final List<Violation> violations = getViolations(filename, ruleNames);
-        if (jsonOutput) {
-            final Gson gson = new Gson();
-            System.out.println(gson.toJson(Map.of("violations", violations)));
-            // TODO fix serialization for violations
-        } else {
-            for (Violation violation : violations) {
-                violation.printToStdout(FILENAME);
-            }
+        for (Violation violation : violations) {
+            violation.printToStdout(FILENAME);
         }
+
         System.exit(0);
     }
 }

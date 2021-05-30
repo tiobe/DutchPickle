@@ -6,10 +6,7 @@ grammar Gherkin;
 
 // TODO
 
-// documentation reference from dashboard: mention Ramon, Rashmi, Bart and Rob
-// Organize demo with SCoE (wait for feedback Rob Jansen: rules + Visual Studio)
-// create a generic function to match lexer tokens, see rule 11, rule 17, and rule 18
-// add version number to the tool, i.e. -v option
+// [Waiting for Ramon] Organize demo with SCoE
 // roll out within Philips worldwide (inform Ramon, go to all projects) + Vanderlande
 // New rule: Backgrounds should only contain givens and no parameters
 // New rule: Scenario outline should not contain multiple instances of same scenarios (so all variables are same between two rows)   
