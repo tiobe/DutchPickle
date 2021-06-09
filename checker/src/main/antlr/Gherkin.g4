@@ -7,7 +7,8 @@ grammar Gherkin;
 // TODO
 
 // [Waiting for Ramon] Organize demo with SCoE
-// roll out within Philips worldwide (inform Ramon, go to all projects) + Vanderlande
+// [Wait for CCB] roll out within Philips worldwide (inform Ramon, go to all projects)
+// Check failing feature files in IGTS environment
 // New rule: Backgrounds should only contain givens and no parameters
 // New rule: Scenario outline should not contain multiple instances of same scenarios (so all variables are same between two rows)   
 // New rule: Variable should have more than 1 value in the example tables (if it’s the same for all scenarios it’s not a variable anymore)   

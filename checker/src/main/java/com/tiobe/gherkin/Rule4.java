@@ -52,8 +52,8 @@ public class Rule4 extends Rule {
                     for (TerminalNode element : item.datatable().DATATABLE()) {
                         final String header = element.getText().substring(1).trim();
                         // check whether header is empty because last table entry "| " could match as well
-                        if (!header.isEmpty() && !parameters.contains(header)) {
-                            addViolation(4, item,"Table header '" + element.getText().substring(1).trim() + "' is not used in this Scenario Outline");
+                        if (!header.isEmpty() && !parameters.contains(header) && !header.equals("TestCaseID")) {
+                            addViolation(4, item,"Table header '" + header + "' is not used in this Scenario Outline");
                           }
                     }
                     tableHeader = false;

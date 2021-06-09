@@ -95,4 +95,11 @@ Scenario Outline: Beam longitudinal movement test
     Examples:
         | TestId | MinPosValue | MaxPosValue | MaxSpeedValue |
         | 1      | 479.0       | 4107.0      | 150.0         |
+
+Scenario Outline: CR28308
+    Given test id is logged
+    Examples:
+        | TestCaseID |
+        |          2 |
+        |          1 |
   
