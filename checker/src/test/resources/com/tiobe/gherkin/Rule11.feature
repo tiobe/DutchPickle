@@ -36,3 +36,10 @@ Scenario:
 @tagtomakeitdifficult
 @tagtomakeitdifficult
 Scenario:
+
+
+# CR
+@ignore
+#VADB-294
+
+Scenario: Store result of a baggage item wil not be reported when the carrier ID is unknown

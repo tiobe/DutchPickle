@@ -19,33 +19,31 @@ public class Rule11 extends Rule {
     }
 
     public void check(final GherkinParser.MainContext ctx, final BufferedTokenStream tokens) {
-        final List<Token> commentBeforeTag = new ArrayList<Token>(); // we should also check whether there is a comment before the tag
+        final List<Token> commentBeforeTag = new ArrayList<>(); // we should also check whether there is a comment before the tag
+        boolean ignore = false;
 
         if (ctx.instructionLine() != null && ctx.instructionLine().size() > 1) {
             for (GherkinParser.InstructionLineContext instruction : ctx.instructionLine()) {
                 if (instruction.instruction() != null) {
-                    if (instruction.instruction().stepInstruction() != null) {
+                    if (instruction.instruction().stepInstruction() != null && !ignore) {
                         if (!commentBeforeTag.isEmpty()) {
                             for (Token token : commentBeforeTag) {
                                 addViolation(11, token.getLine(), token.getCharPositionInLine());
                             }
                         }
                         final List<Token> commentTokens = getCommentTokens(instruction, getEndIndex(instruction.instruction().stepInstruction()), tokens);
-                        if (commentTokens != null) {
                             for (Token token : commentTokens) {
                                 addViolation(11, token.getLine(), token.getCharPositionInLine());
                             }
-                        }
                         commentBeforeTag.clear();
+                        ignore = false;
                     } else if (instruction.instruction().tagline() != null) {
+                        ignore = instruction.instruction().tagline().getText().equals("@ignore");
                         final List<Token> commentTokens = getCommentTokens(instruction, getEndIndex(instruction.instruction().tagline().TAG()), tokens);
-                        if (commentTokens != null) {
-                            for (Token token : commentTokens) {
-                                commentBeforeTag.add(token);
-                            }
-                        }
+                        commentBeforeTag.addAll(commentTokens);
                     } else if (instruction.instruction().rulex() != null) {
                         commentBeforeTag.clear();
+                        ignore = false;
                     }
                 }
             }

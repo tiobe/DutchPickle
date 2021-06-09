@@ -71,7 +71,7 @@ public class App {
             } else if (arg.toLowerCase().endsWith(".feature")) {
                 filename = arg;
             } else if (arg.equals("--version")) {
-                System.out.println("DutchPickle version 1.0, Copyright 2021, TIOBE Software B.V.");
+                System.out.println("DutchPickle version 1.2, Copyright 2021, TIOBE Software B.V.");
                 System.exit(1);
             } else {
                 System.out.println("Unknown option '" + arg + "' encountered, please run without arguments for help");
