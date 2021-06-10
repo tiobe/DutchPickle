@@ -9,6 +9,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,6 @@ import java.util.stream.Collectors;
 
 public class App {
     private static String FILENAME;
-    private static final boolean jsonOutput = false;
 
     public static List<Violation> getViolations(final String filename, final List<String> ruleNames) throws IOException {
         final CharStream charStream = CharStreams.fromFileName(filename);
@@ -44,7 +44,9 @@ public class App {
         try {
             return (Class<Rule>) Class.forName(App.class.getPackageName() + "." + ruleName);
         } catch (final ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            System.out.println("Rule '" + ruleName + "' doesn't exist, please choose another rule ID");
+            System.exit(1);
+            return null;
         }
     }
 
@@ -69,9 +71,14 @@ public class App {
             if (arg.startsWith("--rule")) {
                 ruleNames.add(String.format("Rule%s", (arg.substring(arg.lastIndexOf('e') + 1))));
             } else if (arg.toLowerCase().endsWith(".feature")) {
-                filename = arg;
+                if (new File(arg).exists()) {
+                    filename = arg;
+                } else {
+                    System.out.println("Input file '" + arg + "' doesn't exist");
+                    System.exit(1);
+                }
             } else if (arg.equals("--version")) {
-                System.out.println("DutchPickle version 1.2, Copyright 2021, TIOBE Software B.V.");
+                System.out.println("DutchPickle version 1.3, Copyright 2021, TIOBE Software B.V.");
                 System.exit(1);
             } else {
                 System.out.println("Unknown option '" + arg + "' encountered, please run without arguments for help");
