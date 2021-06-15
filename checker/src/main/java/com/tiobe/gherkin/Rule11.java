@@ -25,28 +25,34 @@ public class Rule11 extends Rule {
         if (ctx.instructionLine() != null && ctx.instructionLine().size() > 1) {
             for (GherkinParser.InstructionLineContext instruction : ctx.instructionLine()) {
                 if (instruction.instruction() != null) {
-                    if (instruction.instruction().stepInstruction() != null && !ignore) {
+                    if (instruction.instruction().stepInstruction() != null) {
                         if (!commentBeforeTag.isEmpty()) {
-                            for (Token token : commentBeforeTag) {
-                                addViolation(11, token.getLine(), token.getCharPositionInLine());
-                            }
+                            commentBeforeTag.forEach(this::createViolation);
                         }
-                        final List<Token> commentTokens = getCommentTokens(instruction, getEndIndex(instruction.instruction().stepInstruction()), tokens);
-                            for (Token token : commentTokens) {
-                                addViolation(11, token.getLine(), token.getCharPositionInLine());
-                            }
-                        commentBeforeTag.clear();
+                        if (!ignore) {
+                            final List<Token> commentTokens = getCommentTokens(instruction, getEndIndex(instruction.instruction().stepInstruction()), tokens);
+                            commentTokens.forEach(this::createViolation);
+                            commentBeforeTag.clear();
+                        }
                         ignore = false;
                     } else if (instruction.instruction().tagline() != null) {
-                        ignore = instruction.instruction().tagline().getText().equals("@ignore");
-                        final List<Token> commentTokens = getCommentTokens(instruction, getEndIndex(instruction.instruction().tagline().TAG()), tokens);
-                        commentBeforeTag.addAll(commentTokens);
+                        ignore = ignore || instruction.instruction().tagline().getText().equals("@ignore");
+                        if (!ignore) {
+                            final List<Token> commentTokens = getCommentTokens(instruction, getEndIndex(instruction.instruction().tagline().TAG()), tokens);
+                            commentBeforeTag.addAll(commentTokens);
+                        }
                     } else if (instruction.instruction().rulex() != null) {
                         commentBeforeTag.clear();
                         ignore = false;
                     }
                 }
             }
+        }
+    }
+
+    private void createViolation(final Token token) {
+        if (!token.getText().matches("^\\s*#//TICS.*$")) {
+            addViolation(11, token.getLine(), token.getCharPositionInLine());
         }
     }
 
