@@ -2,9 +2,11 @@ package com.tiobe.gherkin;
 
 import com.tiobe.antlr.GherkinParser;
 import org.antlr.v4.runtime.BufferedTokenStream;
+import org.antlr.v4.runtime.RuleContext;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Rule14 extends Rule {
     public Rule14(final List<Violation> violations) {
@@ -26,35 +28,54 @@ public class Rule14 extends Rule {
         }
 
         // then determine the number of common prefixes and loop over the Steps to trigger a violation
-        if (allSteps.size() > 1) {
-            for (List<GherkinParser.StepContext> steps : allSteps) {
-                for (int index = 0; index < numberOfCommonGivens(); index++) {
-                    addViolation(14, steps.get(index), "Step '" + getText(steps.get(index), tokens) + "' is the same Step as used in all other Scenarios, so it could be put in a Background");
-                }
+        final int commonGivens = numberOfCommonGivens();
+        for (List<GherkinParser.StepContext> steps : allSteps) {
+            for (int index = 0; index < commonGivens; index++) {
+                addViolation(14, steps.get(index), "Step '" + getText(steps.get(index), tokens) + "' is the same Step as used in all other Scenarios, so it could be put in a Background");
             }
         }
     }
 
     private int numberOfCommonGivens() {
-        for (int numberOfCommonGivens = 0; ; numberOfCommonGivens++) {
-            String commonStep = "";
-            for (final List<GherkinParser.StepContext> steps : allSteps) {
-                final GherkinParser.StepContext currentStep = steps.get(numberOfCommonGivens);
+        List<String> commonSteps;
 
-                // running out of Given steps without parameters
-                if (steps.size() == numberOfCommonGivens || !isGivenStep(currentStep.stepItem()) || containsParameter(currentStep)) {
-                    return numberOfCommonGivens;
+        // there is only one scenario, there are no common steps
+        if (allSteps.size() <= 1) {
+            return 0;
+        }
 
-                // first Scenario
-                } else if (commonStep.isEmpty()) {
-                    commonStep = currentStep.getText();
+        // take the first scenario as a candidate
+        commonSteps = allSteps.get(0).stream().map(RuleContext::getText).collect(Collectors.toList());
 
-                // no common prefix
-                } else if (!currentStep.getText().equals(commonStep)) {
-                    return numberOfCommonGivens;
+        for (final List<GherkinParser.StepContext> steps : allSteps) {
+            int index = 0;
+            int realIndex = 0; // previous Given excluding Data Tables
+            boolean isPreviousGiven = false;
+            for (final GherkinParser.StepContext step : steps) {
+                if (isGivenStep(step.stepItem())) {
+                    realIndex = index;
+                    isPreviousGiven = true;
+                } else if (step.stepItem().datatable() != null) {
+                    isPreviousGiven = false;
+                } else {
+                    // no givens found any more, then we have to stop
+                    break;
                 }
+
+                if (index == commonSteps.size() || !step.getText().equals(commonSteps.get(index)) || containsParameter(step)) {
+                    // the max is reached, there is a mismatch or there is a parameter found, then we have to stop
+                    break;
+                }
+                index++;
+            }
+
+            index = isPreviousGiven ? index : realIndex;
+            // the list is shorter than the candidate, then we have to cut off the candidate
+            if (index < commonSteps.size()) {
+                commonSteps = commonSteps.stream().limit(index).collect(Collectors.toList());
             }
         }
+        return commonSteps.size();
     }
 
     private boolean isGivenStep(final GherkinParser.StepItemContext stepItem) {

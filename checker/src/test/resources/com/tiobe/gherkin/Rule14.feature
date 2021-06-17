@@ -2,7 +2,7 @@ Feature: bla
 
 Scenario: text
 Given bla # Violation
-And foo # Violation
+And foo
 And a step with a <param> in it doesn't count
 When foo
 Then true
@@ -10,7 +10,7 @@ Then true
 
 Scenario: text2
 Given bla # Violation
-And foo # Violation
+And foo
 And a step with a <param> in it doesn't count
 When foo
 Then true2
@@ -19,7 +19,7 @@ Then true2
 Scenario: xxyyy
 #some text
 Given bla # Violation
-And foo # Violation
+And foo
 And a step with a <param> in it doesn't count
 When foo
 Examples:
@@ -27,7 +27,17 @@ Examples:
 
 Scenario Outline: PR27975
 Given bla # Violation
-And foo # Violation
+And foo
+And a step with a <param> in it doesn't count
+When foo
+Then something else
+
+Scenario Outline: CR28388
+Given bla # Violation
+And foo
+| DecelerationValue |
+| 500               |
+| 1000              |
 And a step with a <param> in it doesn't count
 When foo
 Then something else

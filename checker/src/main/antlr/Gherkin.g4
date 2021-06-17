@@ -7,9 +7,7 @@ grammar Gherkin;
 // TODO
 
 // [Waiting for Ramon] Organize demo with SCoE
-// [Wait for CCB] roll out within Philips worldwide (inform Ramon, go to all projects)
 // Add version number to DutchPickle according to Maikel's mail
-// Check whether rule about repetitive Given's also takes And's or *'s (or may be even more into account)
 // New rule: Backgrounds should only contain givens and no parameters
 // New rule: Scenario outline should not contain multiple instances of same scenarios (so all variables are same between two rows)   
 // New rule: Variable should have more than 1 value in the example tables (if it’s the same for all scenarios it’s not a variable anymore)   
