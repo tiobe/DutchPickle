@@ -51,6 +51,7 @@ public class Rule11 extends Rule {
     }
 
     private void createViolation(final Token token) {
+        // ignore TiCS suppression comments
         if (!token.getText().matches("^\\s*#//TICS.*$")) {
             addViolation(11, token.getLine(), token.getCharPositionInLine());
         }

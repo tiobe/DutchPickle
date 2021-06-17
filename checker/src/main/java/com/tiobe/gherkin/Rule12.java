@@ -5,7 +5,6 @@ import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.Token;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class Rule12 extends Rule {
     public Rule12(final List<Violation> violations) {
@@ -25,7 +24,9 @@ public class Rule12 extends Rule {
                 for (Token token : hiddenTokens) {
                     final String text = token.getText();
                     // check whether it concerns a comment, (?s) is needed to match \n for multiline comments
-                    if (Pattern.matches("(?s)(^\\s*#.*)|(^\\s*\"\"\".*)|(^\\s*```.*)", text)) {
+                    if (text.matches("(?s)(^\\s*#.*)|(^\\s*\"\"\".*)|(^\\s*```.*)") &&
+                            !text.toLowerCase().matches(".*copyright.*") &&
+                            !text.toLowerCase().matches(".*\\(c\\).*")) {
                         addViolation(12, token.getLine(), token.getCharPositionInLine());
                     }
                 }

@@ -13,8 +13,10 @@ grammar Gherkin;
 // New rule: Backgrounds should only contain givens and no parameters
 // New rule: Scenario outline should not contain multiple instances of same scenarios (so all variables are same between two rows)   
 // New rule: Variable should have more than 1 value in the example tables (if it’s the same for all scenarios it’s not a variable anymore)   
+// New rule: Check for copyright statement in the top comment, Eric van der Ven Philips CI
 // rename all rules with logical rule names instead of numbers
 // number of tests run is hardcoded now, should be done automatically
+// fix problem Wouter van de Molengraft 11/06/2021 08:21 Vanderlande Re: TICS for Gherkin
 // Extend rule: "A comment should not start with a Step keyword" to all keywords or at least Scenario, tags, etc
 // integrate with C# code and add following 3 new rules:
 // C# related rule: Don't use punctiation in the steps (no '.' nor ',', escpcially inline, that could mean abbreviations) 
