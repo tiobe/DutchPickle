@@ -37,15 +37,13 @@ public class Rule14 extends Rule {
     }
 
     private int numberOfCommonGivens() {
-        List<String> commonSteps;
-
-        // there is only one scenario, there are no common steps
-        if (allSteps.size() <= 1) {
+        // if there is no or only one scenario, there are no common steps
+        if (allSteps == null || allSteps.size() <= 1) {
             return 0;
         }
 
         // take the first scenario as a candidate
-        commonSteps = allSteps.get(0).stream().map(RuleContext::getText).collect(Collectors.toList());
+        List<String> commonSteps = allSteps.get(0).stream().map(RuleContext::getText).collect(Collectors.toList());
 
         for (final List<GherkinParser.StepContext> steps : allSteps) {
             int index = 0;
