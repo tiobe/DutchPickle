@@ -7,13 +7,15 @@ grammar Gherkin;
 // TODO
 
 // [Waiting for Ramon] Organize demo with SCoE
-// Add version number to DutchPickle according to Maikel's mail
-// New rule: Backgrounds should only contain givens and no parameters
-// New rule: Scenario outline should not contain multiple instances of same scenarios (so all variables are same between two rows)   
+// [Waiting for Maikel] Add version number to DutchPickle according to, see https://redmine.tiobe.com/attachments/53229
+
+// number of tests run is hardcoded now, should be done automatically
+// Rule implementation classes should act as derived from interface class Rule and implement getSynopsis, check etc. (now check is never called if the prototype is wrong), also make sure that if second argument of check is not needed (BufferedTokens) that that is supported as well and refactor all calls that doesn't need this.
+// New rule: Scenario outline should not contain multiple instances of same scenarios (so all variables are same between two rows)
 // New rule: Variable should have more than 1 value in the example tables (if it’s the same for all scenarios it’s not a variable anymore)   
 // New rule: Check for copyright statement in the top comment, Eric van der Ven Philips CI
+// think about a logo (Dutch pickle on wooden shoes and wind mill on its head)
 // rename all rules with logical rule names instead of numbers
-// number of tests run is hardcoded now, should be done automatically
 // fix problem Wouter van de Molengraft 11/06/2021 08:21 Vanderlande Re: TICS for Gherkin
 // Extend rule: "A comment should not start with a Step keyword" to all keywords or at least Scenario, tags, etc
 // integrate with C# code and add following 3 new rules:
@@ -22,7 +24,6 @@ grammar Gherkin;
 // C# related rule: No comma separated values in table cells (use multiple cells for multiple values)
 // nice integration in 2nd most common IDE
 // all violations should be printed at the moment they are found, not collected till the end
-// think about a logo (Dutch pickle on wooden shoes and wind mill on its head)
 // nice integration in 3rd most common IDE
 // roll out within TIOBE customer base
 // rules in a separate directory with .class files to allow dynamic patching

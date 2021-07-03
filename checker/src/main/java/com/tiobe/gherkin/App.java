@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 public class App {
@@ -59,6 +60,12 @@ public class App {
 
     }
 
+    private static String getVersion() throws IOException {
+        final Properties prop = new Properties();
+        prop.load(App.class.getClassLoader().getResourceAsStream("build.properties"));
+        return (String) prop.get("version");
+    }
+
     public static void main(final String... args) throws IOException {
         final List<String> ruleNames = new ArrayList<>();
         String filename = "";
@@ -78,8 +85,9 @@ public class App {
                     System.exit(1);
                 }
             } else if (arg.equals("--version")) {
-                System.out.println("DutchPickle version 1.6, Copyright 2021, TIOBE Software B.V.");
-                System.exit(1);
+                final String version = getVersion();
+                System.out.println("DutchPickle version " + version + ", Copyright 2021, TIOBE Software B.V.");
+                System.exit(0);
             } else {
                 System.out.println("Unknown option '" + arg + "' encountered, please run without arguments for help");
                 System.exit(1);

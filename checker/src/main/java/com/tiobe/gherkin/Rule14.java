@@ -50,7 +50,7 @@ public class Rule14 extends Rule {
             int realIndex = 0; // previous Given excluding Data Tables
             boolean isPreviousGiven = false;
             for (final GherkinParser.StepContext step : steps) {
-                if (isGivenStep(step.stepItem())) {
+                if (Utils.isGivenStep(step.stepItem())) {
                     realIndex = index;
                     isPreviousGiven = true;
                 } else if (step.stepItem().datatable() != null) {
@@ -60,7 +60,7 @@ public class Rule14 extends Rule {
                     break;
                 }
 
-                if (index == commonSteps.size() || !step.getText().equals(commonSteps.get(index)) || containsParameter(step)) {
+                if (index == commonSteps.size() || !step.getText().equals(commonSteps.get(index)) || Utils.containsParameter(step)) {
                     // the max is reached, there is a mismatch or there is a parameter found, then we have to stop
                     break;
                 }
@@ -74,14 +74,6 @@ public class Rule14 extends Rule {
             }
         }
         return commonSteps.size();
-    }
-
-    private boolean isGivenStep(final GherkinParser.StepItemContext stepItem) {
-        return stepItem.and() != null || stepItem.anystep() != null || stepItem.but() != null || stepItem.given() != null;
-    }
-
-    private boolean containsParameter(final GherkinParser.StepContext step) {
-        return step.description().stream().anyMatch(x -> x.PARAMETER() != null);
     }
 
     private String getText(final GherkinParser.StepContext step, final BufferedTokenStream tokens) {
