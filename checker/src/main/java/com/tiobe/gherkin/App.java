@@ -11,6 +11,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -62,8 +63,10 @@ public class App {
 
     private static String getVersion() throws IOException {
         final Properties prop = new Properties();
-        prop.load(App.class.getClassLoader().getResourceAsStream("build.properties"));
-        return (String) prop.get("version");
+        try (InputStream in = App.class.getClassLoader().getResourceAsStream("build.properties")) {
+            prop.load(in);
+            return (String) prop.get("version");
+        }
     }
 
     public static void main(final String... args) throws IOException {

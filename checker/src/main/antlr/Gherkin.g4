@@ -9,8 +9,8 @@ grammar Gherkin;
 // [Waiting for Ramon] Organize demo with SCoE
 // [Waiting for Maikel] Add version number to DutchPickle according to, see https://redmine.tiobe.com/attachments/53229
 
-// number of tests run is hardcoded now, should be done automatically
 // Rule implementation classes should act as derived from interface class Rule and implement getSynopsis, check etc. (now check is never called if the prototype is wrong), also make sure that if second argument of check is not needed (BufferedTokens) that that is supported as well and refactor all calls that doesn't need this.
+// Switch on TiCS compiler warnings check for this project
 // New rule: Scenario outline should not contain multiple instances of same scenarios (so all variables are same between two rows)
 // New rule: Variable should have more than 1 value in the example tables (if it’s the same for all scenarios it’s not a variable anymore)   
 // New rule: Check for copyright statement in the top comment, Eric van der Ven Philips CI
@@ -18,6 +18,7 @@ grammar Gherkin;
 // rename all rules with logical rule names instead of numbers
 // fix problem Wouter van de Molengraft 11/06/2021 08:21 Vanderlande Re: TICS for Gherkin
 // Extend rule: "A comment should not start with a Step keyword" to all keywords or at least Scenario, tags, etc
+// Switch on TiCS AI and security check for this project
 // integrate with C# code and add following 3 new rules:
 // C# related rule: Don't use punctiation in the steps (no '.' nor ',', escpcially inline, that could mean abbreviations) 
 // C# related rule: Don't use camelCasing nor PascalCasing (in fact all capitals should be avoided), excluding parameters

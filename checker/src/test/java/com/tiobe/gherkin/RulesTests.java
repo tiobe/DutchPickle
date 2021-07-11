@@ -16,17 +16,21 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RulesTests {
-    static final int NUMBER_OF_RULES = 20; // TODO: derive this number automatically
     public static List<Arguments> getTestFiles() {
-        return IntStream.range(1, NUMBER_OF_RULES + 1)
-                .mapToObj(Integer::toString)
-                .map(x -> Arguments.of(x, new File(RulesTests.class.getResource(String.format("/com/tiobe/gherkin/Rule%s.feature", x)).getFile()).getAbsolutePath()))
-                .collect(Collectors.toUnmodifiableList());
+        final ArrayList<Arguments> result = new ArrayList<>();
+        try {
+            int index = 1;
+            while (true) {
+                result.add(Arguments.of(String.valueOf(index), new File(RulesTests.class.getResource(String.format("/com/tiobe/gherkin/Rule%s.feature", index)).getFile()).getAbsolutePath()));
+                index++;
+            }
+        } catch (final Exception e) {
+            return result;
+        }
     }
 
     public static List<Integer> getExpectedViolationLineNumbers(final List<String> lines) {
