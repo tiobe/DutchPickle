@@ -6,9 +6,7 @@ grammar Gherkin;
 
 // TODO
 
-// [Waiting for Ramon] Organize demo with SCoE
-// [Waiting for Maikel] Add version number to DutchPickle according to, see https://redmine.tiobe.com/attachments/53229
-
+// Add version number to DutchPickle according to, see https://redmine.tiobe.com/attachments/53229
 // Rule implementation classes should act as derived from interface class Rule and implement getSynopsis, check etc. (now check is never called if the prototype is wrong), also make sure that if second argument of check is not needed (BufferedTokens) that that is supported as well and refactor all calls that doesn't need this.
 // Switch on TiCS compiler warnings check for this project
 // New rule: Scenario outline should not contain multiple instances of same scenarios (so all variables are same between two rows)
