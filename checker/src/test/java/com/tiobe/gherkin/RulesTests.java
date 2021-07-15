@@ -7,30 +7,46 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.net.URL;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RulesTests {
-    public static List<Arguments> getTestFiles() {
-        final ArrayList<Arguments> result = new ArrayList<>();
-        try {
-            int index = 1;
-            while (true) {
-                result.add(Arguments.of(String.valueOf(index), new File(RulesTests.class.getResource(String.format("/com/tiobe/gherkin/Rule%s.feature", index)).getFile()).getAbsolutePath()));
-                index++;
-            }
-        } catch (final Exception e) {
-            return result;
+    private static final class TestCase {
+        public int number;
+        public String path;
+        public TestCase(final int number, final String path) {
+            this.number = number;
+            this.path = path;
         }
+    }
+
+    private static Optional<TestCase> getTestFile(final int number) {
+        return Optional.ofNullable(RulesTests.class.getResource(String.format("/com/tiobe/gherkin/Rule%s.feature", number)))
+                .map(URL::getFile)
+                .map(File::new)
+                .map(File::getAbsolutePath)
+                .map(x -> new TestCase(number, x));
+    }
+
+    public static List<Arguments> getTestFiles() {
+        return IntStream.iterate(1, i -> i + 1)
+                .mapToObj(RulesTests::getTestFile)
+                .takeWhile(Optional::isPresent)
+                .map(Optional::get)
+                .map(x -> Arguments.of(Integer.toString(x.number), x.path))
+                .collect(Collectors.toUnmodifiableList());
     }
 
     public static List<Integer> getExpectedViolationLineNumbers(final List<String> lines) {
