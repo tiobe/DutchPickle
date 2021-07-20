@@ -24,7 +24,7 @@ this is also a comment
 Scenario:
 
 
-# bla
+# bla # Violation
 bla
 
 @tagtomakeitdifficult
@@ -53,3 +53,9 @@ Scenario: TiCS suppressions should be allowed
 @ignore
 @thiswillstopignoring
 Scenario: this shouldn't give a violation
+
+  Scenario: PR28590
+    # This should trigger a violation # Violation
+    Given I am logged in as Dr. Bill
+    When I try to post to "Expensive Therapy"
+    Then I should see "Your article was published."

@@ -22,29 +22,27 @@ public class Rule11 extends Rule {
         final List<Token> commentBeforeTag = new ArrayList<>(); // we should also check whether there is a comment before the tag
         boolean ignore = false;
 
-        if (ctx.instructionLine() != null && ctx.instructionLine().size() > 1) {
-            for (GherkinParser.InstructionLineContext instruction : ctx.instructionLine()) {
-                if (instruction.instruction() != null) {
-                    if (instruction.instruction().stepInstruction() != null) {
-                        if (!commentBeforeTag.isEmpty()) {
-                            commentBeforeTag.forEach(this::createViolation);
-                        }
-                        if (!ignore) {
-                            final List<Token> commentTokens = getCommentTokens(instruction, getEndIndex(instruction.instruction().stepInstruction()), tokens);
-                            commentTokens.forEach(this::createViolation);
-                            commentBeforeTag.clear();
-                        }
-                        ignore = false;
-                    } else if (instruction.instruction().tagline() != null) {
-                        ignore = ignore || instruction.instruction().tagline().getText().equals("@ignore");
-                        if (!ignore) {
-                            final List<Token> commentTokens = getCommentTokens(instruction, getEndIndex(instruction.instruction().tagline().TAG()), tokens);
-                            commentBeforeTag.addAll(commentTokens);
-                        }
-                    } else if (instruction.instruction().rulex() != null) {
-                        commentBeforeTag.clear();
-                        ignore = false;
+        for (GherkinParser.InstructionLineContext instruction : ctx.instructionLine()) {
+            if (instruction.instruction() != null) {
+                if (instruction.instruction().stepInstruction() != null) {
+                    if (!commentBeforeTag.isEmpty()) {
+                        commentBeforeTag.forEach(this::createViolation);
                     }
+                    if (!ignore) {
+                        final List<Token> commentTokens = getCommentTokens(instruction, getEndIndex(instruction.instruction()), tokens);
+                        commentTokens.forEach(this::createViolation);
+                        commentBeforeTag.clear();
+                    }
+                    ignore = false;
+                } else if (instruction.instruction().tagline() != null) {
+                    ignore = ignore || instruction.instruction().tagline().getText().equals("@ignore");
+                    if (!ignore) {
+                        final List<Token> commentTokens = getCommentTokens(instruction, getEndIndex(instruction.instruction().tagline().TAG()), tokens);
+                        commentBeforeTag.addAll(commentTokens);
+                    }
+                } else if (instruction.instruction().rulex() != null) {
+                    commentBeforeTag.clear();
+                    ignore = false;
                 }
             }
         }
@@ -77,6 +75,19 @@ public class Rule11 extends Rule {
         }
 
         return commentTokens;
+    }
+
+    private int getEndIndex(final GherkinParser.InstructionContext instruction) {
+        // select the token before the first step/first step description/first description
+        if (!instruction.step().isEmpty()) {
+            return instruction.step(0).start.getTokenIndex() - 1;
+        } else if (!instruction.stepDescription().isEmpty()) {
+            return instruction.stepDescription(0).start.getTokenIndex() - 1;
+        } else if (!instruction.description().isEmpty()){
+            return instruction.description(0).start.getTokenIndex() - 1;
+        } else {
+            return getEndIndex(instruction.stepInstruction());
+        }
     }
 
     private int getEndIndex(final GherkinParser.StepInstructionContext step) {
