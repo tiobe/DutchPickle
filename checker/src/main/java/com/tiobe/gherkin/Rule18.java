@@ -15,7 +15,7 @@ public class Rule18 extends Rule {
     }
 
     public String getSynopsis() {
-        return "Words within a step should be separated by a single space";
+        return "Words within a Step should be separated by a single space";
     }
 
     public void check(final GherkinParser.StepContext ctx, final BufferedTokenStream tokens) {
@@ -34,7 +34,7 @@ public class Rule18 extends Rule {
         if (ctx.stepItem() != null && ctx.stepItem().datatable() != null) {
             for (final TerminalNode node : ctx.stepItem().datatable().DATATABLE()) {
                 if (node.getText().matches("\\|\\s\\s.*")) {
-                    addViolation(18, node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), "Double space encountered at the beginning of a data table cell");
+                    addViolation(18, node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine() + 2, "Double space encountered at the beginning of a data table cell");
                 }
             }
         }
