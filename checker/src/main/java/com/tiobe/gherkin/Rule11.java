@@ -35,7 +35,8 @@ public class Rule11 extends Rule {
                     }
                     ignore = false;
                 } else if (instruction.instruction().tagline() != null) {
-                    ignore = ignore || instruction.instruction().tagline().getText().equals("@ignore");
+                    final List<TerminalNode> nodes = instruction.instruction().tagline().TAG();
+                    ignore = ignore || nodes.get(nodes.size() - 1).getText().equals("@ignore"); // ignore, if the last tag of the line is "@ignore"
                     if (!ignore) {
                         final List<Token> commentTokens = getCommentTokens(instruction, getEndIndex(instruction.instruction().tagline().TAG()), tokens);
                         commentBeforeTag.addAll(commentTokens);

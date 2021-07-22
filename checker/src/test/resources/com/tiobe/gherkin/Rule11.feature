@@ -59,3 +59,11 @@ Scenario: this shouldn't give a violation
     Given I am logged in as Dr. Bill
     When I try to post to "Expensive Therapy"
     Then I should see "Your article was published."
+
+@sometag @ignore #this is OK
+# this shouldn't give a violation but it does
+Scenario: PR28609
+
+@ignore @sometag
+# this is a violation # Violation
+Scenario: PR28609
