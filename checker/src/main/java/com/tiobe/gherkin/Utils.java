@@ -10,6 +10,11 @@ public final class Utils {
     }
 
     public static boolean containsParameter(final GherkinParser.StepContext step) {
-        return step.description().stream().anyMatch(x -> x.PARAMETER() != null);
+        return step.description().stream().anyMatch(x -> x.PARAMETER() != null) || containsParameter(step.stepItem());
+    }
+
+    private static boolean containsParameter(final GherkinParser.StepItemContext stepItem) {
+        return stepItem.datatable() != null
+                && (stepItem.datatable().DATATABLE().stream().anyMatch(x -> (x.getText().contains("<") && x.getText().contains(">"))));
     }
 }
