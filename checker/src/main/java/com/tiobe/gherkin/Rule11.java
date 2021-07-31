@@ -58,20 +58,12 @@ public class Rule11 extends Rule {
 
     private List<Token> getCommentTokens(final GherkinParser.InstructionLineContext instruction, final int end, final BufferedTokenStream tokens) {
         final List<Token> commentTokens = new ArrayList<>();
-        final int begin = instruction.getStart().getTokenIndex();
 
-        if (begin < end) {
-            for (int i = begin; i <= end; i++) {
-                final List<Token> hiddenTokens = tokens.getHiddenTokensToLeft(i);
-                if (hiddenTokens != null) {
-                    for (Token token : hiddenTokens) {
-                        final String text = token.getText();
-                        // check whether it concerns a comment, (?s) is needed to match \n for multiline comments
-                        if (Pattern.matches("(?s)(^\\s*#.*)|(^\\s*\"\"\".*)|(^\\s*```.*)", text)) {
-                            commentTokens.add(token);
-                        }
-                    }
-                }
+        for (Token token : Utils.getHiddenTokens(instruction.getStart().getTokenIndex(), end, tokens)) {
+            final String text = token.getText();
+            // check whether it concerns a comment, (?s) is needed to match \n for multiline comments
+            if (Pattern.matches("(?s)(^\\s*#.*)|(^\\s*\"\"\".*)|(^\\s*```.*)", text)) {
+                commentTokens.add(token);
             }
         }
 

@@ -42,22 +42,13 @@ public class Rule18 extends Rule {
 
     private List<Token> getDoubleSpaceTokens(final GherkinParser.DescriptionContext instruction, final BufferedTokenStream tokens) {
         final List<Token> spaceTokens = new ArrayList<>();
-        final int begin = instruction.getStart().getTokenIndex();
-        final int end = instruction.getStop().getTokenIndex();
-
-        for (int i = begin; i <= end; i++) {
-            final List<Token> hiddenTokens = tokens.getHiddenTokensToLeft(i);
-            if (hiddenTokens != null) {
-                for (final Token token : hiddenTokens) {
-                    final String text = token.getText();
-                    // check whether it concerns a double space
-                    if (Pattern.matches(".*\\s\\s.*", text)) {
-                        spaceTokens.add(token);
-                    }
-                }
+        for (final Token token : Utils.getHiddenTokens(instruction.getStart().getTokenIndex(), instruction.getStop().getTokenIndex(), tokens)) {
+            final String text = token.getText();
+            // check whether it concerns a double space
+            if (Pattern.matches(".*\\s\\s.*", text)) {
+                spaceTokens.add(token);
             }
         }
-
         return spaceTokens;
     }
 }
