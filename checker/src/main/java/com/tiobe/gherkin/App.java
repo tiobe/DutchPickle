@@ -103,6 +103,9 @@ public class App {
         }
 
         final List<Violation> violations = getViolations(filename, ruleNames);
+        if (violations.isEmpty()) {
+            System.out.println("No violations found");
+        }
         for (Violation violation : violations) {
             violation.printToStdout(FILENAME);
         }
