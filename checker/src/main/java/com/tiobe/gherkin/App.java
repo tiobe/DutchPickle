@@ -20,20 +20,6 @@ import java.util.stream.Collectors;
 public class App {
     private static String FILENAME;
 
-    public static List<Violation> getViolations(final String filename, final List<String> ruleNames) throws IOException {
-        final CharStream charStream = CharStreams.fromFileName(filename);
-        final GherkinLexer lexer = new GherkinLexer(charStream);
-        final CommonTokenStream tokens = new CommonTokenStream(lexer);
-        final GherkinParser parser = new GherkinParser(tokens);
-        final ParseTree tree = parser.main();
-        final ParseTreeWalker walker = new ParseTreeWalker();
-        final List<Violation> violations = new ArrayList<>(); // TODO: rewrite so that violations are printed while running (stream)
-        final List<Rule> rules = getRules(ruleNames, violations);
-
-        FILENAME = tokens.getSourceName();
-        walker.walk(new GherkinListener(tokens, rules), tree);
-        return violations;
-    }
 
     public static List<Rule> getRules(final List<String> ruleNames, final List<Violation> violations) {
         return ruleNames.stream()
@@ -102,14 +88,36 @@ public class App {
             System.exit(1);
         }
 
+        checkViolations(filename, ruleNames);
+
+        System.exit(0);
+    }
+
+    private static void checkViolations(final String filename, final List<String> ruleNames) throws IOException {
         final List<Violation> violations = getViolations(filename, ruleNames);
+
         if (violations.isEmpty()) {
             System.out.println("No violations found");
         }
+
         for (Violation violation : violations) {
             violation.printToStdout(FILENAME);
         }
+    }
 
-        System.exit(0);
+    public static List<Violation> getViolations(final String filename, final List<String> ruleNames) throws IOException {
+        final CharStream charStream = CharStreams.fromFileName(filename);
+        final GherkinLexer lexer = new GherkinLexer(charStream);
+        final CommonTokenStream tokens = new CommonTokenStream(lexer);
+        final GherkinParser parser = new GherkinParser(tokens);
+        final ParseTree tree = parser.main();
+        final ParseTreeWalker walker = new ParseTreeWalker();
+        final List<Violation> violations = new ArrayList<>(); // TODO: rewrite so that violations are printed while running (stream)
+        final List<Rule> rules = getRules(ruleNames, violations);
+
+        FILENAME = tokens.getSourceName();
+        walker.walk(new GherkinListener(tokens, rules), tree);
+
+        return violations;
     }
 }

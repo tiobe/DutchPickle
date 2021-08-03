@@ -130,7 +130,7 @@ WHEN: 'When' ;
 TAG: '@' TEXT ;
 PARAMETER: '<' ID '>' | '"' '<' ID '>' '"' | '\'' '<' ID '>' '\'';
 fragment ID: [A-Za-z0-9/\-_.:;=+()[\],@\\?{}%& ]* [A-Za-z0-9/\-_.:;=+()[\],@\\?{}%&] [A-Za-z0-9/\-_.:;=+()[\],@\\?{}%& ]*; // ID should contain at least one non-whitespace character otherwise the trailing | with a trailing space will match
-fragment DATATABLEID: [A-Za-z0-9/\-_.:;=+()[\],<>@\\?{}%&"' ]* [A-Za-z0-9/\-_.:;=+()[\],<>@\\?{}%&"'] [A-Za-z0-9/\-_.:;=+()[\],<>@\\?{}%&"' ]*; // ID should contain at least one non-whitespace character otherwise the trailing | with a trailing space will match
+fragment DATATABLEID: [A-Za-z0-9/\-_.:;=+()[\],<>@!\\?{}%&"' ]* [A-Za-z0-9/\-_.:;=+()[\],<>@!\\?{}%&"'] [A-Za-z0-9/\-_.:;=+()[\],<>@!\\?{}%&"' ]*; // ID should contain at least one non-whitespace character otherwise the trailing | with a trailing space will match
 
 NL: '\r'? '\n' ;
 

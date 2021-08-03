@@ -27,3 +27,8 @@ Examples:
 |       this is not OK| bla | # Violation
 | this is also not OK |  bla| # Violation
 
+  # PR28673
+  Examples:
+  | sometext |
+  | x !? y   |
+
