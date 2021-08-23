@@ -34,6 +34,5 @@ public class Rule21 extends Rule {
                 }
             }
         }
-
     }
 }

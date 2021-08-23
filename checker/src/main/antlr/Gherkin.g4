@@ -6,7 +6,6 @@ grammar Gherkin;
 
 // TODO
 
-// New rule: Variable should have more than 1 value in the example tables (if it’s the same for all scenarios it’s not a variable anymore)
 // New rule: Check for copyright statement in the top comment, Eric van der Ven Philips CI
 // think about a logo (Dutch pickle on wooden shoes and wind mill on its head)
 // rename all rules with logical rule names instead of numbers
