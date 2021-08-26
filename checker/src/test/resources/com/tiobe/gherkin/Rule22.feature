@@ -13,7 +13,7 @@ Feature: Variable should have more than 1 different value in the example tables
   | x | bla     | foooo |
 
     Examples:
-    | x | y | z |
+    | x | y | z | # Violation
     | x | bla | foo |
     | x | zwa | foooo |
 
@@ -36,3 +36,21 @@ Feature: Variable should have more than 1 different value in the example tables
           | x | y | z |
           | x | bla | foo |
           | x | zwa | foooo |
+
+  Scenario Outline:
+
+    Scenarios:
+      | x | y | z |
+      | x | bla | foo |
+      | x | bla | foooo |
+
+    Scenarios:
+      | x | y | z |
+      | x | bla | foo |
+      | t | zwa | foooo |
+
+        Scenario Outline: # CR28804
+        | foo | y | z |
+        | foo | bla |
+        | x | bla     | foooo |
+

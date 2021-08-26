@@ -16,12 +16,16 @@ public class Rule22 extends Rule {
     }
 
     public void check(final GherkinParser.InstructionContext ctx, final BufferedTokenStream tokens) {
+        boolean inExamples = false; // only check if you are in an Examples table
         if (!ctx.step().isEmpty()) {
             final List<List<String>> rows = new ArrayList<>();
             GherkinParser.DatatableContext dbContext = null; // needed for line number info
             for (final GherkinParser.StepContext step : ctx.step()) {
                 final GherkinParser.DatatableContext datatable = step.stepItem().datatable();
-                if (datatable != null) {
+                if (step.stepItem().examples() != null) {
+                    inExamples = true;
+                }
+                else if (inExamples && datatable != null) {
                     rows.add(Utils.getCells(datatable));
                     if (dbContext == null) {
                         dbContext = datatable;

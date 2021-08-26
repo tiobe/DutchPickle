@@ -12,22 +12,23 @@ grammar Gherkin;
 // fix problem Wouter van de Molengraft 11/06/2021 08:21 Vanderlande Re: TICS for Gherkin
 // Extend rule: "A comment should not start with a Step keyword" to all keywords or at least Scenario, tags, etc
 // Switch on TiCS AI and security check for this project
+// roll out within TIOBE customer base
 // integrate with C# code and add following 3 new rules:
 // C# related rule: Don't use punctiation in the steps (no '.' nor ',', escpcially inline, that could mean abbreviations) 
 // C# related rule: Don't use camelCasing nor PascalCasing (in fact all capitals should be avoided), excluding parameters
 // C# related rule: No comma separated values in table cells (use multiple cells for multiple values)
+// go public
 // nice integration in 2nd most common IDE
 // all violations should be printed at the moment they are found, not collected till the end
 // nice integration in 3rd most common IDE
-// roll out within TIOBE customer base
 // rules in a separate directory with .class files to allow dynamic patching
 // enable JSON output
 // make sure other charsets are handled correctly as well, see example file
 // as-you-type
 // being able to distribute DutchPickle without TiCS
-// go public
 // automated refactoring
 // language dependent keywords
+// Martijn.Govers@philips.com: support for Catch2 BDD style cc: https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md#bdd-style
 
 main
     : feature description* instructionLine* NL* EOF
