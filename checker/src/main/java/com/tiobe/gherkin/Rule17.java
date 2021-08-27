@@ -21,8 +21,8 @@ public class Rule17 extends Rule {
         List<Integer> columns = new ArrayList<>();
         if (ctx.step() != null) {
             for (GherkinParser.StepContext step : ctx.step()) {
-               if (step.stepItem() != null && step.stepItem().datatable() != null) {
-                    final GherkinParser.DatatableContext datatable = step.stepItem().datatable();
+                final GherkinParser.DatatableContext datatable = step.stepItem().datatable();
+                if (step.stepItem() != null && datatable != null) {
                     if (columns == null) {
                         columns = getColumns(datatable);
                     } else {
@@ -39,7 +39,8 @@ public class Rule17 extends Rule {
 
     public void check(final GherkinParser.DatatableContext ctx, final BufferedTokenStream tokens) {
         final String cells = tokens.getText(ctx.start, ctx.stop);
-        if (cells.matches(".*\\|\\S.*") || cells.matches(".*\\S\\|.*")) {
+        // the second and third match are needed to exclude "\|" (escaped column divider) from matching
+        if (cells.matches("\\|\\S.*") || cells.matches(".*[^\\\\]\\|\\S.*") || cells.matches(".*[^\\\\\\s]\\|.*")) {
             addViolation(17, ctx, "Missing margin for cells");
         }
     }

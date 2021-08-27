@@ -32,3 +32,9 @@ Examples:
   | sometext |
   | x !? y   |
 
+  # PR28806
+  Examples:
+    | Event name                                       | Details                                |
+    | Waste - TR BAND Radial Artery Compression Device |                                        |
+    | Apply - TR BAND Radial Artery Compression Device | Success:No\|Right radial artery\|10m^3 |
+    | Waste - TR BAND Radial Artery Compression Device |                                        |
