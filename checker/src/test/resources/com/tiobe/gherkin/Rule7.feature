@@ -5,7 +5,7 @@ Scenario: this is OK todododo # OK
 Given the best we can to do # OK
 But this Todo is wrong # Violation
 | table | not | a | todo | problem | # OK
-And what about a parameter <ToDO> # OK
+And what about a parameter <ToDO> # Violation
 # A TODO in comments is also forbidden # Violation
 """ # Violation
 another 

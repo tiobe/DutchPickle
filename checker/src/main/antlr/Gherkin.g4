@@ -6,15 +6,17 @@ grammar Gherkin;
 
 // TODO
 
-// improve DATATABLEELEMENT to include all ascii characters and also base ID on this
+// [Waiting for Ramon contact person SWCoE for rules] marco.ortelee@philips.com: discuss removal of empty cell rule with DutchPickle board
+
 // marco.ortelee@philips.com: solve bug table outlining non-ascii characters
 // marco.ortelee@philips.com: solve bug word spacing for non-ascii characters
-// marco.ortelee@philips.com: discuss removal of empty cell rule with DutchPickle board
 // marco.ortelee@philips.com: TICS client for DutchPickle should work and should be super fast
 // marco.ortelee@philips.com: New rule: comments below tags are allowed if they start with the tag name
 // New rule: Check for copyright statement in the top comment, Eric van der Ven Philips CI
 // think about a logo (Dutch pickle on wooden shoes and wind mill on its head)
 // marco.ortelee@philips.com: check difference with gherkin linter and ask community whether these rules are also interesting
+// john.de.bot@philips.com: Use unique scenario names, preferably starting with an ID to map the test scenario to a test specification. To be able to run a subset of all tests, each test must be uniquely named. Specflow does not enforce this across features (only within features)
+// john.de.bot@philips.com: When using parameters in a scenario or step, they should be recognizable by (either single or double quotes). We have seen 3 different ways in specflow tests: no special marking (positioning), single quotes (Fixed system level) and double quotes (IAC system level).
 // rename all rules with logical rule names instead of numbers
 // fix problem Wouter van de Molengraft 11/06/2021 08:21 Vanderlande Re: TICS for Gherkin
 // make one improvement to make it easier to integrate DutchPickle in the software process, e.g. npm package, market place etc ask community
@@ -24,20 +26,22 @@ grammar Gherkin;
 // make one improvement to make it easier to integrate DutchPickle in the software process, e.g. npm package, market place etc ask community
 // marco.ortelee@philips.com: no duplicate feature names across file borders
 // marco.ortelee@philips.com: no duplicate scenario names across file borders
+// all violations should be printed at the moment they are found, not collected till the end
+// being able to distribute DutchPickle without TiCS
+// go public
 // integrate with C# code and add following 3 new rules:
 // C# related rule: Don't use punctiation in the steps (no '.' nor ',', escpcially inline, that could mean abbreviations) 
 // C# related rule: Don't use camelCasing nor PascalCasing (in fact all capitals should be avoided), excluding parameters
 // C# related rule: No comma separated values in table cells (use multiple cells for multiple values)
 // make one improvement to make it easier to integrate DutchPickle in the software process, e.g. npm package, market place etc ask community
-// go public
 // nice integration in 2nd most common IDE
-// all violations should be printed at the moment they are found, not collected till the end
+// remi-christiaan.cool@philips.com: just like integration with C# also integrate with C++
 // nice integration in 3rd most common IDE
 // rules in a separate directory with .class files to allow dynamic patching
 // enable JSON output
 // as-you-type
+// Tobias.Flossmann@philips.com: rule about boolean tags, see Philips Hamburg 8-sept-2021
 // make sure other charsets are handled correctly as well, see example file
-// being able to distribute DutchPickle without TiCS
 // automated refactoring
 // language dependent keywords
 // Martijn.Govers@philips.com: support for Catch2 BDD style cc: https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md#bdd-style
@@ -99,9 +103,11 @@ when: WHEN ;
 examples: EXAMPLES ;
 
 // Descriptions
-instructionDescription: TEXT | PARAMETER | AND | ANYSTEP | BUT | GIVEN | THEN | WHEN | SCENARIO ; // We have to deal with overlaps with keywords
-stepDescription: TEXT | PARAMETER ; // We have to deal with overlaps with keywords
-description: TEXT | PARAMETER | TAG | AND | ANYSTEP | BUT | DATATABLE | GIVEN | THEN | WHEN | SCENARIO | SCENARIOOUTLINE ; // We have to deal with overlaps with keywords
+instructionDescription: text | PARAMETER | AND | ANYSTEP | BUT | GIVEN | THEN | WHEN | SCENARIO ; // We have to deal with overlaps with keywords
+stepDescription: text | PARAMETER ; // We have to deal with overlaps with keywords
+description: text | PARAMETER | TAG | AND | ANYSTEP | BUT | DATATABLE | GIVEN | THEN | WHEN | SCENARIO | SCENARIOOUTLINE ; // We have to deal with overlaps with keywords
+
+text: TOKEN+ ;
 
 // LEXER
 
@@ -138,15 +144,16 @@ GIVEN: 'Given' ;
 THEN: 'Then' ;
 WHEN: 'When' ;
 
-TAG: '@' TEXT ;
-PARAMETER: '<' ID '>' | '"' '<' ID '>' '"' | '\'' '<' ID '>' '\'';
-fragment ID: [A-Za-z0-9/\-_.:;=+()[\],@\\?{}%& ]* [A-Za-z0-9/\-_.:;=+()[\],@\\?{}%&] [A-Za-z0-9/\-_.:;=+()[\],@\\?{}%& ]*; // ID should contain at least one non-whitespace character otherwise the trailing | with a trailing space will match
+TAG: '@' TOKEN+ ;
+PARAMETER: '<' PARID '>' | '"' '<' PARID '>' '"' | '\'' '<' PARID '>' '\'';
+fragment PARID: [A-Za-z0-9] ([!-=?-~ ]* [!-=?-~])?; // start with an alpha numerical and then all printable characters and end with a non-space
+fragment ID: (IDELEMENT | ' ')* IDELEMENT (IDELEMENT | ' ')*; // ID should contain at least one non-whitespace character otherwise the trailing | with a trailing space will match
 fragment DATATABLEID: (DATATABLEELEMENT | ' ')* DATATABLEELEMENT (DATATABLEELEMENT | ' ')*; // ID should contain at least one non-whitespace character otherwise the trailing | with a trailing space will match
-fragment DATATABLEELEMENT: [A-Za-z0-9/\-_.:;^=+()[\],<>@!\\?{}%&"'] | '\\|' ;
+fragment DATATABLEELEMENT: ELEMENT | '<' | '>' | '"' | '\'' | '\\|' ;
+fragment IDELEMENT: ELEMENT | '|' ;
+fragment ELEMENT: [!$-&(-;=?-{}~] ;
 
 NL: '\r'? '\n' ;
-
-TEXT: TOKEN+ ;
-fragment TOKEN: [!-;=-{}-~\u00A0-\u00FF] ;
+TOKEN: [!-{}-~\u00A0-\u00FF] ; // match everything that isn't matched yet
 
 

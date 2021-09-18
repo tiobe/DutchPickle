@@ -49,3 +49,7 @@ When there is a table
 
 Then the rule should not fire
 
+Scenario Outline: Check
+  Given case <Case>
+  When I call a <= b
+  Then I get result <result>
