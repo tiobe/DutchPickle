@@ -51,7 +51,7 @@ main
     ;
 
 feature
-    : (NL* tagline)* NL* FEATURE
+    : (NL* tagline)* NL* FEATURE?
     ;
 
 instructionLine
