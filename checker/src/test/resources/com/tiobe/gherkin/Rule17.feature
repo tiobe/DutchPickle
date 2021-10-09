@@ -38,3 +38,13 @@ Examples:
     | Waste - TR BAND Radial Artery Compression Device |                                        |
     | Apply - TR BAND Radial Artery Compression Device | Success:No\|Right radial artery\|10m^3 |
     | Waste - TR BAND Radial Artery Compression Device |                                        |
+
+  # PR29081
+          Examples:
+         Then the timeline shows items
+             | Event name                                              | Details                                    |
+             | Remove - Solitaire? X, STENT SFR4-3-40-10 V01 3X40      |                                            |
+             | At Location - Solitaire? X, STENT SFR4-3-40-10 V01 3X40 | Aorta Abdomen                              |
+             | Insert - Solitaire? X, STENT SFR4-3-40-10 V01 3X40      |                                            |
+             | Waste - ReLine, Stent                                   |                                            |
+

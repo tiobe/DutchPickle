@@ -6,10 +6,8 @@ grammar Gherkin;
 
 // TODO
 
-// [Waiting for Ramon contact person SWCoE for rules] marco.ortelee@philips.com: discuss removal of empty cell rule with DutchPickle board
-
-// marco.ortelee@philips.com: solve bug table outlining non-ascii characters
 // marco.ortelee@philips.com: solve bug word spacing for non-ascii characters
+// [Waiting for CCB] marco.ortelee@philips.com: discuss removal of empty cell rule with DutchPickle board
 // marco.ortelee@philips.com: TICS client for DutchPickle should work and should be super fast
 // marco.ortelee@philips.com: New rule: comments below tags are allowed if they start with the tag name
 // New rule: Check for copyright statement in the top comment, Eric van der Ven Philips CI
@@ -144,16 +142,16 @@ GIVEN: 'Given' ;
 THEN: 'Then' ;
 WHEN: 'When' ;
 
-TAG: '@' TOKEN+ ;
+TAG: '@' ELEMENT+ ;
 PARAMETER: '<' PARID '>' | '"' '<' PARID '>' '"' | '\'' '<' PARID '>' '\'';
 fragment PARID: [A-Za-z0-9] ([!-=?-~ ]* [!-=?-~])?; // start with an alpha numerical and then all printable characters and end with a non-space
 fragment ID: (IDELEMENT | ' ')* IDELEMENT (IDELEMENT | ' ')*; // ID should contain at least one non-whitespace character otherwise the trailing | with a trailing space will match
 fragment DATATABLEID: (DATATABLEELEMENT | ' ')* DATATABLEELEMENT (DATATABLEELEMENT | ' ')*; // ID should contain at least one non-whitespace character otherwise the trailing | with a trailing space will match
 fragment DATATABLEELEMENT: ELEMENT | '<' | '>' | '"' | '\'' | '\\|' ;
 fragment IDELEMENT: ELEMENT | '|' ;
-fragment ELEMENT: [!$-&(-;=?-{}~] ;
+fragment ELEMENT: [!$-&(-;=?-{}~\u00A0-\uFFFF] ;
 
 NL: '\r'? '\n' ;
-TOKEN: [!-{}-~\u00A0-\u00FF] ; // match everything that isn't matched yet
+TOKEN: [!-{}-~\u00A0-\uFFFF] ; // match everything that isn't matched yet
 
 
