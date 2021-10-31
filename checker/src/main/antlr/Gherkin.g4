@@ -6,11 +6,9 @@ grammar Gherkin;
 
 // TODO
 
-// marco.ortelee@philips.com: solve bug word spacing for non-ascii characters
 // [Waiting for CCB] marco.ortelee@philips.com: discuss removal of empty cell rule with DutchPickle board
-// marco.ortelee@philips.com: TICS client for DutchPickle should work and should be super fast
-// marco.ortelee@philips.com: New rule: comments below tags are allowed if they start with the tag name
 // New rule: Check for copyright statement in the top comment, Eric van der Ven Philips CI
+// marco.ortelee@philips.com: TICS client for DutchPickle should work and should be super fast
 // think about a logo (Dutch pickle on wooden shoes and wind mill on its head)
 // marco.ortelee@philips.com: check difference with gherkin linter and ask community whether these rules are also interesting
 // john.de.bot@philips.com: Use unique scenario names, preferably starting with an ID to map the test scenario to a test specification. To be able to run a subset of all tests, each test must be uniquely named. Specflow does not enforce this across features (only within features)

@@ -8,6 +8,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Rule11 extends Rule {
     public Rule11(final List<Violation> violations) {
@@ -20,23 +21,26 @@ public class Rule11 extends Rule {
 
     public void check(final GherkinParser.MainContext ctx, final BufferedTokenStream tokens) {
         final List<Token> commentBeforeTag = new ArrayList<>(); // we should also check whether there is a comment before the tag
+        final List<String> allTags = new ArrayList<>(); // we should also check whether there is an existing tag used at the start of a comment
         boolean ignore = false;
 
         for (GherkinParser.InstructionLineContext instruction : ctx.instructionLine()) {
             if (instruction.instruction() != null) {
                 if (instruction.instruction().stepInstruction() != null) {
                     if (!commentBeforeTag.isEmpty()) {
-                        commentBeforeTag.forEach(this::createViolation);
+                        commentBeforeTag.forEach(token -> createViolation(token, allTags));
                     }
                     if (!ignore) {
                         final List<Token> commentTokens = getCommentTokens(instruction, getEndIndex(instruction.instruction()), tokens);
-                        commentTokens.forEach(this::createViolation);
+                        commentTokens.forEach(token -> createViolation(token, allTags));
                         commentBeforeTag.clear();
                     }
                     ignore = false;
+                    allTags.clear();
                 } else if (instruction.instruction().tagline() != null) {
-                    final List<TerminalNode> nodes = instruction.instruction().tagline().TAG();
-                    ignore = ignore || nodes.get(nodes.size() - 1).getText().equals("@ignore"); // ignore, if the last tag of the line is "@ignore"
+                    final List<String> tags = getTags(instruction.instruction().tagline());
+                    allTags.addAll(tags);
+                    ignore = ignore || tags.get(tags.size()-1).equals("ignore"); // ignore, if the last tag of the line is "@ignore"
                     if (!ignore) {
                         final List<Token> commentTokens = getCommentTokens(instruction, getEndIndex(instruction.instruction().tagline().TAG()), tokens);
                         commentBeforeTag.addAll(commentTokens);
@@ -49,9 +53,9 @@ public class Rule11 extends Rule {
         }
     }
 
-    private void createViolation(final Token token) {
-        // ignore TiCS suppression comments
-        if (!token.getText().matches("^\\s*#//TICS.*$")) {
+    private void createViolation(final Token token, final List<String> tags) {
+        // ignore TiCS suppression comments and comments that start with a tag
+        if (!token.getText().matches("^\\s*#//TICS.*$") && !startsWithTag(token.getText(), tags)) {
             addViolation(11, token.getLine(), token.getCharPositionInLine());
         }
     }
@@ -68,6 +72,17 @@ public class Rule11 extends Rule {
         }
 
         return commentTokens;
+    }
+
+    private List<String> getTags(final GherkinParser.TaglineContext ctx) {
+        return ctx.TAG().stream().map(x -> x.getText().substring(1)).collect(Collectors.toList()); // remove prefix '@' of a tag
+    }
+
+    private boolean startsWithTag(final String comment, final List<String> tags) {
+        // for instance:
+        // @sometag:11123
+        // # sometag:11123 - this is OK because it starts with a tag name
+        return tags.stream().anyMatch(tag -> comment.matches("\\s*#\\s*" + Pattern.quote(tag) + "\\s+.*"));
     }
 
     private int getEndIndex(final GherkinParser.InstructionContext instruction) {

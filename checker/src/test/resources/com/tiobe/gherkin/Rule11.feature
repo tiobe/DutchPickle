@@ -67,3 +67,13 @@ Scenario: PR28609
 @ignore @sometag
 # this is a violation # Violation
 Scenario: PR28609
+
+@sometag:433
+@sometag:11123
+# sometag:11123 - this is OK because it starts with a tag name
+# sometag:111234 - this is NOK because it starts not with a tag name # Violation
+# sometag:433 - still OK
+Scenario: CR29180
+
+# sometag:433 - not valid any more # Violation
+Scenario: an extra one
