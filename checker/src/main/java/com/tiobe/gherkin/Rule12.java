@@ -16,20 +16,26 @@ public class Rule12 extends Rule {
     }
 
     public void check(final GherkinParser.MainContext ctx, final BufferedTokenStream tokens) {
-        for (Token token : Utils.getHiddenTokens(ctx.getStart().getTokenIndex(), getEndIndex(ctx), tokens)) {
-            final String text = token.getText();
-            // check whether it concerns a comment, (?s) is needed to match \n for multiline comments
-            if (text.matches("(?s)(^\\s*#.*)|(^\\s*\"\"\".*)|(^\\s*```.*)") &&
-                    !text.toLowerCase().matches(".*copyright.*") &&
-                    !text.toLowerCase().matches(".*\\(c\\).*") &&
-                    !token.getText().matches("^\\s*#//TICS.*$")) { // don't report TiCS suppressions
-                addViolation(12, token.getLine(), token.getCharPositionInLine());
-            }
+        if (ctx.STARTCOMMENT() != null) {
+            createViolation(ctx.STARTCOMMENT().getSymbol());
+        }
+        Utils.getHiddenTokens(ctx.getStart().getTokenIndex(), getEndIndex(ctx), tokens).forEach(this::createViolation);
+    }
+
+    private void createViolation(final Token token) {
+        final String text = token.getText();
+        // check whether it concerns a comment, (?s) is needed to match \n for multiline comments,
+        // ^(\r?\n)? is needed to match both normal comments (starting with newline) and the start comment (not starting with newline)
+        if (text.matches("(?s)(^(\\r?\\n)?\\s*#.*)|(^\\s*\"\"\".*)|(^\\s*```.*)") &&
+                !text.toLowerCase().matches("(\\r?\\n)?.*copyright.*") &&
+                !text.toLowerCase().matches("(\\r?\\n)?.*\\(c\\).*") &&
+                !token.getText().matches("^(\\r?\\n)?\\s*#//TICS.*$")) { // don't report TiCS suppressions
+            addViolation(12, Utils.getCommentLineNumber(token), token.getCharPositionInLine());
         }
     }
 
     private int getEndIndex(final GherkinParser.MainContext ctx) {
-        int index = 0;
+        int index;
 
         if (!ctx.instructionLine().isEmpty()) {
             index = ctx.instructionLine().get(0).getStart().getTokenIndex();

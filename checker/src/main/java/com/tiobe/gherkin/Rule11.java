@@ -23,7 +23,6 @@ public class Rule11 extends Rule {
         final List<Token> commentBeforeTag = new ArrayList<>(); // we should also check whether there is a comment before the tag
         final List<String> allTags = new ArrayList<>(); // we should also check whether there is an existing tag used at the start of a comment
         boolean ignore = false;
-
         for (GherkinParser.InstructionLineContext instruction : ctx.instructionLine()) {
             if (instruction.instruction() != null) {
                 if (instruction.instruction().stepInstruction() != null) {
@@ -55,18 +54,17 @@ public class Rule11 extends Rule {
 
     private void createViolation(final Token token, final List<String> tags) {
         // ignore TiCS suppression comments and comments that start with a tag
-        if (!token.getText().matches("^\\s*#//TICS.*$") && !startsWithTag(token.getText(), tags)) {
-            addViolation(11, token.getLine(), token.getCharPositionInLine());
+        if (!token.getText().matches("^\\r?\\n\\s*#//TICS.*$") && !startsWithTag(token.getText(), tags)) {
+            addViolation(11, Utils.getCommentLineNumber(token), token.getCharPositionInLine());
         }
     }
 
     private List<Token> getCommentTokens(final GherkinParser.InstructionLineContext instruction, final int end, final BufferedTokenStream tokens) {
         final List<Token> commentTokens = new ArrayList<>();
-
         for (Token token : Utils.getHiddenTokens(instruction.getStart().getTokenIndex(), end, tokens)) {
             final String text = token.getText();
             // check whether it concerns a comment, (?s) is needed to match \n for multiline comments
-            if (Pattern.matches("(?s)(^\\s*#.*)|(^\\s*\"\"\".*)|(^\\s*```.*)", text)) {
+            if (Pattern.matches("(?s)(^\\r?\\n\\s*#.*)|(^\\s*\"\"\".*)|(^\\s*```.*)", text)) {
                 commentTokens.add(token);
             }
         }
@@ -82,7 +80,7 @@ public class Rule11 extends Rule {
         // for instance:
         // @sometag:11123
         // # sometag:11123 - this is OK because it starts with a tag name
-        return tags.stream().anyMatch(tag -> comment.matches("\\s*#\\s*" + Pattern.quote(tag) + "\\s+.*"));
+        return tags.stream().anyMatch(tag -> comment.matches("\\r?\\n\\s*#\\s*" + Pattern.quote(tag) + "\\s+.*"));
     }
 
     private int getEndIndex(final GherkinParser.InstructionContext instruction) {
@@ -91,10 +89,12 @@ public class Rule11 extends Rule {
             return instruction.step(0).start.getTokenIndex() - 1;
         } else if (!instruction.stepDescription().isEmpty()) {
             return instruction.stepDescription(0).start.getTokenIndex() - 1;
-        } else if (!instruction.description().isEmpty()){
+        } else if (!instruction.description().isEmpty()) {
             return instruction.description(0).start.getTokenIndex() - 1;
-        } else {
+        } else if (instruction.stepInstruction() != null) {
             return getEndIndex(instruction.stepInstruction());
+        } else {
+            return -1;
         }
     }
 

@@ -6,7 +6,11 @@ grammar Gherkin;
 
 // TODO
 
-// [Waiting for CCB] marco.ortelee@philips.com: discuss removal of empty cell rule with DutchPickle board
+// remove sample files
+// solve all issues RTC
+// improve command line options
+// being able to distribute DutchPickle without TiCS
+// go public: github
 // New rule: Check for copyright statement in the top comment, Eric van der Ven Philips CI
 // marco.ortelee@philips.com: TICS client for DutchPickle should work and should be super fast
 // think about a logo (Dutch pickle on wooden shoes and wind mill on its head)
@@ -23,8 +27,6 @@ grammar Gherkin;
 // marco.ortelee@philips.com: no duplicate feature names across file borders
 // marco.ortelee@philips.com: no duplicate scenario names across file borders
 // all violations should be printed at the moment they are found, not collected till the end
-// being able to distribute DutchPickle without TiCS
-// go public
 // integrate with C# code and add following 3 new rules:
 // C# related rule: Don't use punctiation in the steps (no '.' nor ',', escpcially inline, that could mean abbreviations) 
 // C# related rule: Don't use camelCasing nor PascalCasing (in fact all capitals should be avoided), excluding parameters
@@ -43,7 +45,8 @@ grammar Gherkin;
 // Martijn.Govers@philips.com: support for Catch2 BDD style cc: https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md#bdd-style
 
 main
-    : feature description* instructionLine* NL* EOF
+    // start comment needed because each comment should start on a new line except for the start comment
+    : STARTCOMMENT? feature description* instructionLine* NL* EOF
     ;
 
 feature
@@ -101,7 +104,7 @@ examples: EXAMPLES ;
 // Descriptions
 instructionDescription: text | PARAMETER | AND | ANYSTEP | BUT | GIVEN | THEN | WHEN | SCENARIO ; // We have to deal with overlaps with keywords
 stepDescription: text | PARAMETER ; // We have to deal with overlaps with keywords
-description: text | PARAMETER | TAG | AND | ANYSTEP | BUT | DATATABLE | GIVEN | THEN | WHEN | SCENARIO | SCENARIOOUTLINE ; // We have to deal with overlaps with keywords
+description: text | PARAMETER | TAG | AND | ANYSTEP | BUT | DATATABLE | GIVEN | THEN | WHEN | SCENARIO | SCENARIOOUTLINE | STARTCOMMENT ; // We have to deal with overlaps with keywords
 
 text: TOKEN+ ;
 
@@ -113,15 +116,17 @@ BOMUTF8 : '\u00EF\u00BB\u00BF' -> skip ;
 
 BOMUTF16 : '\uFEFF' -> skip ;
 
-WHITESPACE: [ \t]+ -> channel(HIDDEN) ;
+WHITESPACE: [ \t]+ -> channel(1) ;
 
-COMMENT: '#' ~[\r\n\f]* -> channel(HIDDEN) ;
+COMMENT: '\r'?'\n' [ \t]* '#' ~[\r\n]* -> channel(2) ;
+
+STARTCOMMENT: '#' ~[\r\n]* ;
 
 DOCSTRING1
-    : '"""' .*? '"""' -> channel(HIDDEN) ;
+    : '"""' .*? '"""' -> channel(2) ;
 
 DOCSTRING2
-    : '```' .*? '```' -> channel(HIDDEN) ;
+    : '```' .*? '```' -> channel(2) ;
 
 // Instructions
 BACKGROUND: 'Background:' ;
@@ -147,7 +152,7 @@ fragment ID: (IDELEMENT | ' ')* IDELEMENT (IDELEMENT | ' ')*; // ID should conta
 fragment DATATABLEID: (DATATABLEELEMENT | ' ')* DATATABLEELEMENT (DATATABLEELEMENT | ' ')*; // ID should contain at least one non-whitespace character otherwise the trailing | with a trailing space will match
 fragment DATATABLEELEMENT: ELEMENT | '<' | '>' | '"' | '\'' | '\\|' ;
 fragment IDELEMENT: ELEMENT | '|' ;
-fragment ELEMENT: [!$-&(-;=?-{}~\u00A0-\uFFFF] ;
+fragment ELEMENT: [!-&(-;=?-{}~\u00A0-\uFFFF] ;
 
 NL: '\r'? '\n' ;
 TOKEN: [!-{}-~\u00A0-\uFFFF] ; // match everything that isn't matched yet

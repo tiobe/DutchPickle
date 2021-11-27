@@ -6,7 +6,6 @@ bla bla
 # hello # Violation
 # x # Violation
 
-
 Scenario Outline:
 
 bla bla
@@ -45,6 +44,7 @@ Scenario:
 Scenario: Store result of a baggage item wil not be reported when the carrier ID is unknown
 
 # CR28372 # Violation
+
 #//TICS this should be allowed
 Scenario: TiCS suppressions should be allowed
 
@@ -60,7 +60,7 @@ Scenario: this shouldn't give a violation
     When I try to post to "Expensive Therapy"
     Then I should see "Your article was published."
 
-@sometag @ignore #this is OK
+@sometag @ignore
 # this shouldn't give a violation but it does
 Scenario: PR28609
 

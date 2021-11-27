@@ -15,13 +15,13 @@ Scenario Outline: foo # OK
 Examples:
 
 Scenario Outline: wow 
-Examples:
-| hello | # Violation
+Examples: # Violation+1
+| hello |
 
 Scenario Outline: wow 
 Given <hello2> "<hello3>"
-Examples:
-| hello2 | hello | hello3 | # Violation
+Examples: # Violation+1
+| hello2 | hello | hello3 |
 
 Scenario Outline: wow # OK
 Given <hello2> "<hello3>"
@@ -33,8 +33,8 @@ Scenario Outline: wow
 Given <xxx> "<yyy>"
 Examples:
 | xxx | yyy |
-Examples:
-| yyy | foo | # Violation
+Examples: # Violation+1
+| yyy | foo |
 
 @Config.System.Biplane
 Scenario Outline: check for parentheses in parameters

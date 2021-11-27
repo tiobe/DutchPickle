@@ -12,14 +12,14 @@ Examples:
 
 
 Scenario Outline:
-When <bla>
-| bla | | bla | # Violation
+When <bla> # Violation+1
+| bla | | bla |
 | bla | bla | bla | # OK
 
 Examples:
-Examples:
-| bla | bla | | # Violation
-|                                 | bla | bla | # Violation
+Examples: # Violation+1 # Violation+2
+| bla | bla | |
+|                                 | bla | bla |
 
 
 

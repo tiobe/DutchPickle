@@ -6,6 +6,7 @@ import org.antlr.v4.runtime.Token;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public final class Utils {
@@ -28,7 +29,7 @@ public final class Utils {
         return datatable.DATATABLE().stream().map(cell -> cell.getText().replaceAll("^\\|\\s*(?:(.*[^\\s])\\s*)?$", "$1")).collect(Collectors.toList());
     }
 
-    public static List<Token> getHiddenTokens(final int begin, final int end, final BufferedTokenStream tokens) {
+    public static Set<Token> getHiddenTokens(final int begin, final int end, final BufferedTokenStream tokens) {
         final List<Token> result = new ArrayList<>();
 
         if (begin <= end) {
@@ -40,6 +41,12 @@ public final class Utils {
             }
         }
 
-        return result;
+        return Set.copyOf(result);
+    }
+
+    // single line comments (starting with #) contain a preceding newline which causes line numbers to be one too low, this should be compensated.
+    public static int getCommentLineNumber(final Token token) {
+        final int line = token.getLine();
+        return token.getText().startsWith("\n") || token.getText().startsWith("\r") ? line + 1 : line;
     }
 }

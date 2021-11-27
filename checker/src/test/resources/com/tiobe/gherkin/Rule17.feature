@@ -48,3 +48,9 @@ Examples:
              | Insert - Solitaire? X, STENT SFR4-3-40-10 V01 3X40      |                                            |
              | Waste - ReLine, Stent                                   |                                            |
 
+Scenario: bla
+       Then the Sheath device is inserted with the properties
+            | Device description                                              | Lot      | Serial #   | Exp date   |
+            | SHEATH SENSH1628W Sentrant Hydr EtO eIFU, 28cm x 16F            | 00134856 | 1234567890 | 9/28/2020  |
+
+

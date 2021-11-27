@@ -39,7 +39,7 @@ public class Rule7 extends Rule {
         for (Token token : tokens.getTokens()) {
             if (token.getType() == GherkinLexer.COMMENT || token.getType() == GherkinLexer.DOCSTRING1 || token.getType() == GherkinLexer.DOCSTRING2) {
                 if (isToDo(token.getText())) {
-                    addViolation(7, token.getLine(), token.getCharPositionInLine());
+                    addViolation(7, Utils.getCommentLineNumber(token), token.getCharPositionInLine());
                 }
             }
         }
