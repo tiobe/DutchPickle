@@ -11,7 +11,7 @@ public class Rule8 extends Rule {
     }
 
     public String getSynopsis() {
-        return "Scenarios should be short (less than 100 steps)";
+        return "Scenarios should be short (less than 50 steps)";
     }
 
     public void check(final GherkinParser.InstructionContext ctx, final BufferedTokenStream tokens) {
@@ -24,7 +24,7 @@ public class Rule8 extends Rule {
                     steps++;
                 }
             }
-            if (steps > 100) {
+            if (steps > 50) {
                 String type = "";
                 if (stepInstruction.background() != null) {
                     type = "Background";

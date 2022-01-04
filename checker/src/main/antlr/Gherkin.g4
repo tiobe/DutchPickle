@@ -6,7 +6,6 @@ grammar Gherkin;
 
 // TODO
 
-// remove sample files
 // solve all issues RTC
 // improve command line options
 // being able to distribute DutchPickle without TiCS
