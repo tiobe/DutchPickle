@@ -61,4 +61,3 @@ DEST = absolem:/home/wilde/ticsweb/pub/codecheckers/$(TOOL)
 INSTALLERDEST = absolem:/home/wilde/ticsweb/pub/installer
 publish: package relnotes
 	scp $(TOOL)-$(SVNVERSION).zip $(TOOL)-relnotes.html $(DEST)
-	scp $(TOOL)-$(SVNVERSION).zip $(INSTALLERDEST)/$(TOOL)-latest.zip
