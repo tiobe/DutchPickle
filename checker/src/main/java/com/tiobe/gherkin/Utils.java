@@ -49,4 +49,26 @@ public final class Utils {
         final int line = token.getLine();
         return token.getText().startsWith("\n") || token.getText().startsWith("\r") ? line + 1 : line;
     }
+
+    public static int getEndIndex(final GherkinParser.MainContext ctx) {
+        int index;
+
+        if (!ctx.instructionLine().isEmpty()) {
+            index = ctx.instructionLine().get(0).getStart().getTokenIndex();
+            for (GherkinParser.InstructionLineContext instruction : ctx.instructionLine()) {
+                if (instruction != null && instruction.instruction() != null && instruction.instruction().instructionDescription() != null) {
+                    index = instruction.instruction().instructionDescription().getStop().getTokenIndex();
+                } else { // no description
+                    return index;
+                }
+            }
+            index = 0;
+        } else if (!ctx.description().isEmpty()) {
+            index = ctx.description().get(ctx.description().size() - 1).getStop().getTokenIndex();
+        } else {
+            index = ctx.feature().FEATURE() != null ? ctx.feature().FEATURE().getSymbol().getTokenIndex() : 0;
+        }
+        return index;
+    }
+
 }

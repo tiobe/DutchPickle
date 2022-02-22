@@ -19,7 +19,7 @@ public class Rule12 extends Rule {
         if (ctx.STARTCOMMENT() != null) {
             createViolation(ctx.STARTCOMMENT().getSymbol());
         }
-        Utils.getHiddenTokens(ctx.getStart().getTokenIndex(), getEndIndex(ctx), tokens).forEach(this::createViolation);
+        Utils.getHiddenTokens(ctx.getStart().getTokenIndex(), Utils.getEndIndex(ctx), tokens).forEach(this::createViolation);
     }
 
     private void createViolation(final Token token) {
@@ -32,26 +32,5 @@ public class Rule12 extends Rule {
                 !token.getText().matches("^(\\r?\\n)?\\s*#//TICS.*$")) { // don't report TiCS suppressions
             addViolation(12, Utils.getCommentLineNumber(token), token.getCharPositionInLine());
         }
-    }
-
-    private int getEndIndex(final GherkinParser.MainContext ctx) {
-        int index;
-
-        if (!ctx.instructionLine().isEmpty()) {
-            index = ctx.instructionLine().get(0).getStart().getTokenIndex();
-            for (GherkinParser.InstructionLineContext instruction : ctx.instructionLine()) {
-                if (instruction.instruction().instructionDescription() != null) {
-                    index = instruction.instruction().instructionDescription().getStop().getTokenIndex();
-                } else { // no description
-                    return index;
-                }
-            }
-            index = 0;
-        } else if (!ctx.description().isEmpty()) {
-           index = ctx.description().get(ctx.description().size() - 1).getStop().getTokenIndex();
-        } else {
-            index = ctx.feature().FEATURE().getSymbol().getTokenIndex();
-        }
-        return index;
     }
 }
