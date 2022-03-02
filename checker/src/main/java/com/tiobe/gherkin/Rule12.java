@@ -4,6 +4,7 @@ import com.tiobe.antlr.GherkinParser;
 import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.Token;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Rule12 extends Rule {
@@ -16,19 +17,48 @@ public class Rule12 extends Rule {
     }
 
     public void check(final GherkinParser.MainContext ctx, final BufferedTokenStream tokens) {
+        final List<Token> commentBeforeTag = new ArrayList<>(); // we should also check whether there is a comment before the tag
+        final List<String> allTags = new ArrayList<>(); // we should also check whether there is an existing tag used at the start of a comment
+        boolean ignore = false;
         if (ctx.STARTCOMMENT() != null) {
-            createViolation(ctx.STARTCOMMENT().getSymbol());
+            createViolation(ctx.STARTCOMMENT().getSymbol(), null);
         }
-        Utils.getHiddenTokens(ctx.getStart().getTokenIndex(), Utils.getEndIndex(ctx), tokens).forEach(this::createViolation);
+        if (!ctx.feature().isEmpty()) {
+            int previousTagIndex = 0;
+            List<String> tags = null;
+            for (GherkinParser.TaglineContext tag : ctx.feature().tagline()) {
+                tags = Utils.getTags(tag);
+                allTags.addAll(tags);
+                if (!ignore && previousTagIndex != 0) {
+                    final List<Token> commentTokens = Utils.getCommentTokens(previousTagIndex, Utils.getEndIndex(tag.TAG()), tokens);
+                    commentBeforeTag.addAll(commentTokens);
+                    if (!commentBeforeTag.isEmpty()) {
+                        commentBeforeTag.forEach(token -> createViolation(token, allTags));
+                    }
+                    commentBeforeTag.clear();
+                }
+                ignore = tags.get(tags.size()-1).equals("ignore");
+                previousTagIndex = tag.getStart().getTokenIndex();
+            }
+            // also check the code between the last tag and the feature
+            if (!ignore && previousTagIndex != 0) {
+                final List<Token> commentTokens = Utils.getCommentTokens(previousTagIndex, Utils.getEndIndex(ctx), tokens);
+                commentBeforeTag.addAll(commentTokens);
+                if (!commentBeforeTag.isEmpty()) {
+                    commentBeforeTag.forEach(token -> createViolation(token, allTags));
+                }
+            }
+        }
     }
 
-    private void createViolation(final Token token) {
+    private void createViolation(final Token token, final List<String> tags) {
         final String text = token.getText();
         // check whether it concerns a comment, (?s) is needed to match \n for multiline comments,
         // ^(\r?\n)? is needed to match both normal comments (starting with newline) and the start comment (not starting with newline)
         if (text.matches("(?s)(^(\\r?\\n)?\\s*#.*)|(^\\s*\"\"\".*)|(^\\s*```.*)") &&
                 !text.toLowerCase().matches("(\\r?\\n)?.*copyright.*") &&
                 !text.toLowerCase().matches("(\\r?\\n)?.*\\(c\\).*") &&
+                !Utils.startsWithTag(token.getText(), tags) &&
                 !token.getText().matches("^(\\r?\\n)?\\s*#//TICS.*$")) { // don't report TiCS suppressions
             addViolation(12, Utils.getCommentLineNumber(token), token.getCharPositionInLine());
         }

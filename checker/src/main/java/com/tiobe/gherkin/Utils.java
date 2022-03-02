@@ -3,10 +3,12 @@ package com.tiobe.gherkin;
 import com.tiobe.antlr.GherkinParser;
 import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public final class Utils {
@@ -29,6 +31,36 @@ public final class Utils {
         return datatable.DATATABLE().stream().map(cell -> cell.getText().replaceAll("^\\|\\s*(?:(.*[^\\s])\\s*)?$", "$1")).collect(Collectors.toList());
     }
 
+    // single line comments (starting with #) contain a preceding newline which causes line numbers to be one too low, this should be compensated.
+    public static int getCommentLineNumber(final Token token) {
+        final int line = token.getLine();
+        return token.getText().startsWith("\n") || token.getText().startsWith("\r") ? line + 1 : line;
+    }
+
+    public static List<Token> getCommentTokens(final int begin, final int end, final BufferedTokenStream tokens) {
+        final List<Token> commentTokens = new ArrayList<>();
+        for (Token token : Utils.getHiddenTokens(begin, end, tokens)) {
+            final String text = token.getText();
+            // check whether it concerns a comment, (?s) is needed to match \n for multiline comments
+            if (Pattern.matches("(?s)(^\\r?\\n\\s*#.*)|(^\\s*\"\"\".*)|(^\\s*```.*)", text)) {
+                commentTokens.add(token);
+            }
+        }
+
+        return commentTokens;
+    }
+
+    public static List<String> getTags(final GherkinParser.TaglineContext ctx) {
+        return ctx.TAG().stream().map(x -> x.getText().substring(1)).collect(Collectors.toList()); // remove prefix '@' of a tag
+    }
+
+    public static boolean startsWithTag(final String comment, final List<String> tags) {
+        // for instance:
+        // @sometag:11123
+        // # sometag:11123 - this is OK because it starts with a tag name
+        return tags != null ? tags.stream().anyMatch(tag -> comment.matches("\\r?\\n\\s*#\\s*" + Pattern.quote(tag) + "\\s+.*")) : false;
+    }
+
     public static Set<Token> getHiddenTokens(final int begin, final int end, final BufferedTokenStream tokens) {
         final List<Token> result = new ArrayList<>();
 
@@ -44,14 +76,8 @@ public final class Utils {
         return Set.copyOf(result);
     }
 
-    // single line comments (starting with #) contain a preceding newline which causes line numbers to be one too low, this should be compensated.
-    public static int getCommentLineNumber(final Token token) {
-        final int line = token.getLine();
-        return token.getText().startsWith("\n") || token.getText().startsWith("\r") ? line + 1 : line;
-    }
-
     public static int getEndIndex(final GherkinParser.MainContext ctx) {
-        int index;
+        int index = 0;
 
         if (!ctx.instructionLine().isEmpty()) {
             index = ctx.instructionLine().get(0).getStart().getTokenIndex();
@@ -69,6 +95,10 @@ public final class Utils {
             index = ctx.feature().FEATURE() != null ? ctx.feature().FEATURE().getSymbol().getTokenIndex() : 0;
         }
         return index;
+    }
+
+    public static int getEndIndex(final List<TerminalNode> nodes) {
+        return nodes.get(nodes.size() - 1).getSymbol().getTokenIndex();
     }
 
 }

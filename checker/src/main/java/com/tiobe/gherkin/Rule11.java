@@ -7,8 +7,6 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class Rule11 extends Rule {
     public Rule11(final List<Violation> violations) {
@@ -30,18 +28,18 @@ public class Rule11 extends Rule {
                         commentBeforeTag.forEach(token -> createViolation(token, allTags));
                     }
                     if (!ignore) {
-                        final List<Token> commentTokens = getCommentTokens(instruction, getEndIndex(instruction.instruction()), tokens);
+                        final List<Token> commentTokens = Utils.getCommentTokens(instruction.getStart().getTokenIndex(), getEndIndex(instruction.instruction()), tokens);
                         commentTokens.forEach(token -> createViolation(token, allTags));
                         commentBeforeTag.clear();
                     }
                     ignore = false;
                     allTags.clear();
                 } else if (instruction.instruction().tagline() != null) {
-                    final List<String> tags = getTags(instruction.instruction().tagline());
+                    final List<String> tags = Utils.getTags(instruction.instruction().tagline());
                     allTags.addAll(tags);
                     ignore = ignore || tags.get(tags.size()-1).equals("ignore"); // ignore, if the last tag of the line is "@ignore"
                     if (!ignore) {
-                        final List<Token> commentTokens = getCommentTokens(instruction, getEndIndex(instruction.instruction().tagline().TAG()), tokens);
+                        final List<Token> commentTokens = Utils.getCommentTokens(instruction.getStart().getTokenIndex(), Utils.getEndIndex(instruction.instruction().tagline().TAG()), tokens);
                         commentBeforeTag.addAll(commentTokens);
                     }
                 } else if (instruction.instruction().rulex() != null) {
@@ -54,33 +52,9 @@ public class Rule11 extends Rule {
 
     private void createViolation(final Token token, final List<String> tags) {
         // ignore TiCS suppression comments and comments that start with a tag
-        if (!token.getText().matches("^\\r?\\n\\s*#//TICS.*$") && !startsWithTag(token.getText(), tags)) {
+        if (!token.getText().matches("^\\r?\\n\\s*#//TICS.*$") && !Utils.startsWithTag(token.getText(), tags)) {
             addViolation(11, Utils.getCommentLineNumber(token), token.getCharPositionInLine());
         }
-    }
-
-    private List<Token> getCommentTokens(final GherkinParser.InstructionLineContext instruction, final int end, final BufferedTokenStream tokens) {
-        final List<Token> commentTokens = new ArrayList<>();
-        for (Token token : Utils.getHiddenTokens(instruction.getStart().getTokenIndex(), end, tokens)) {
-            final String text = token.getText();
-            // check whether it concerns a comment, (?s) is needed to match \n for multiline comments
-            if (Pattern.matches("(?s)(^\\r?\\n\\s*#.*)|(^\\s*\"\"\".*)|(^\\s*```.*)", text)) {
-                commentTokens.add(token);
-            }
-        }
-
-        return commentTokens;
-    }
-
-    private List<String> getTags(final GherkinParser.TaglineContext ctx) {
-        return ctx.TAG().stream().map(x -> x.getText().substring(1)).collect(Collectors.toList()); // remove prefix '@' of a tag
-    }
-
-    private boolean startsWithTag(final String comment, final List<String> tags) {
-        // for instance:
-        // @sometag:11123
-        // # sometag:11123 - this is OK because it starts with a tag name
-        return tags.stream().anyMatch(tag -> comment.matches("\\r?\\n\\s*#\\s*" + Pattern.quote(tag) + "\\s+.*"));
     }
 
     private int getEndIndex(final GherkinParser.InstructionContext instruction) {
@@ -110,9 +84,5 @@ public class Rule11 extends Rule {
         }
 
         return node != null? node.getSymbol().getTokenIndex() : -1;
-    }
-
-    private int getEndIndex(final List<TerminalNode> nodes) {
-        return nodes.get(nodes.size() - 1).getSymbol().getTokenIndex();
     }
 }
