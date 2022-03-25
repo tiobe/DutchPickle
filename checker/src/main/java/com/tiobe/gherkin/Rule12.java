@@ -19,36 +19,38 @@ public class Rule12 extends Rule {
     public void check(final GherkinParser.MainContext ctx, final BufferedTokenStream tokens) {
         final List<Token> commentBeforeTag = new ArrayList<>(); // we should also check whether there is a comment before the tag
         final List<String> allTags = new ArrayList<>(); // we should also check whether there is an existing tag used at the start of a comment
-        boolean ignore = false;
+
         if (ctx.STARTCOMMENT() != null) {
             createViolation(ctx.STARTCOMMENT().getSymbol(), null);
         }
         if (!ctx.feature().isEmpty()) {
+            boolean ignore = false;
             int previousTagIndex = 0;
-            List<String> tags = null;
-            for (GherkinParser.TaglineContext tag : ctx.feature().tagline()) {
+            List<String> tags;
+            for (final GherkinParser.TaglineContext tag : ctx.feature().tagline()) {
                 tags = Utils.getTags(tag);
                 allTags.addAll(tags);
                 if (!ignore && previousTagIndex != 0) {
                     final List<Token> commentTokens = Utils.getCommentTokens(previousTagIndex, Utils.getEndIndex(tag.TAG()), tokens);
-                    commentBeforeTag.addAll(commentTokens);
-                    if (!commentBeforeTag.isEmpty()) {
-                        commentBeforeTag.forEach(token -> createViolation(token, allTags));
-                    }
-                    commentBeforeTag.clear();
+                    createViolation(commentBeforeTag, commentTokens, allTags);
                 }
-                ignore = tags.get(tags.size()-1).equals("ignore");
+                ignore = tags.get(tags.size() - 1).equals("ignore");
                 previousTagIndex = tag.getStart().getTokenIndex();
             }
             // also check the code between the last tag and the feature
             if (!ignore && previousTagIndex != 0) {
                 final List<Token> commentTokens = Utils.getCommentTokens(previousTagIndex, Utils.getEndIndex(ctx), tokens);
-                commentBeforeTag.addAll(commentTokens);
-                if (!commentBeforeTag.isEmpty()) {
-                    commentBeforeTag.forEach(token -> createViolation(token, allTags));
-                }
+                createViolation(commentBeforeTag, commentTokens, allTags);
             }
         }
+    }
+
+    private void createViolation(final List<Token> commentBeforeTag, final List<Token> commentTokens, final List<String> allTags) {
+        commentBeforeTag.addAll(commentTokens);
+        if (!commentBeforeTag.isEmpty()) {
+            commentBeforeTag.forEach(token -> createViolation(token, allTags));
+        }
+        commentBeforeTag.clear();
     }
 
     private void createViolation(final Token token, final List<String> tags) {

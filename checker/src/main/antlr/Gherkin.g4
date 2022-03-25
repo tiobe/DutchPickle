@@ -6,13 +6,11 @@ grammar Gherkin;
 
 // TODO
 
-// solve all issues RTC
 // improve command line options
+// use the DutchPickle logo in some way, see website & house style
 // being able to distribute DutchPickle without TiCS
 // go public: github
-// New rule: Check for copyright statement in the top comment, Eric van der Ven Philips CI
 // marco.ortelee@philips.com: TICS client for DutchPickle should work and should be super fast
-// think about a logo (Dutch pickle on wooden shoes and wind mill on its head)
 // marco.ortelee@philips.com: check difference with gherkin linter and ask community whether these rules are also interesting
 // john.de.bot@philips.com: Use unique scenario names, preferably starting with an ID to map the test scenario to a test specification. To be able to run a subset of all tests, each test must be uniquely named. Specflow does not enforce this across features (only within features)
 // john.de.bot@philips.com: When using parameters in a scenario or step, they should be recognizable by (either single or double quotes). We have seen 3 different ways in specflow tests: no special marking (positioning), single quotes (Fixed system level) and double quotes (IAC system level).
