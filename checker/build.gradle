@@ -7,7 +7,7 @@ plugins {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -34,7 +34,7 @@ task generateInfo(type: GenerateInfoTask) {
     jsonFile = file "${project.buildDir}/generated/info.json"
 }
 
-def generatedResources = "${project.buildDir}/generated"
+def generatedResources = "${project.buildDir}/generatedResources"
 
 task createBuildProperties(type: GenerateBuildPropertiesTask) {
     svnVersion = project.hasProperty('SVNVERSION') ? SVNVERSION : '?'
@@ -59,7 +59,7 @@ tasks.named('test') {
 
 jacocoTestReport {
     reports {
-        xml.enabled true
+        xml.required.set(true)
     }
 }
 

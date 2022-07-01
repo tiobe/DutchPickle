@@ -1,4 +1,4 @@
-// Copyright 2021, TIOBE Software B.V.
+// Copyright 2022, TIOBE Software B.V.
 package com.tiobe.gherkin;
 
 import com.tiobe.antlr.GherkinLexer;
@@ -28,9 +28,9 @@ public class App {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    public static Class<Rule> getRuleByName(final String ruleName) {
+    public static Class<? extends Rule> getRuleByName(final String ruleName) {
         try {
-            return (Class<Rule>) Class.forName(App.class.getPackageName() + "." + ruleName);
+            return Class.forName(App.class.getPackageName() + "." + ruleName).asSubclass(Rule.class);
         } catch (final ClassNotFoundException e) {
             System.out.println("Rule '" + ruleName + "' doesn't exist, please choose another rule ID");
             System.exit(1);
@@ -38,7 +38,7 @@ public class App {
         }
     }
 
-    public static Rule instantiateRule(final Class<Rule> ruleClass, final List<Violation> violations) {
+    public static Rule instantiateRule(final Class<? extends Rule> ruleClass, final List<Violation> violations) {
         try {
             return ruleClass.getDeclaredConstructor(List.class).newInstance(violations);
         } catch (final Exception e) {
