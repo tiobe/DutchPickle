@@ -26,9 +26,8 @@ public class Rule12 extends Rule {
         if (!ctx.feature().isEmpty()) {
             boolean ignore = false;
             int previousTagIndex = 0;
-            List<String> tags;
             for (final GherkinParser.TaglineContext tag : ctx.feature().tagline()) {
-                tags = Utils.getTags(tag);
+                final List<String> tags = Utils.getTags(tag);
                 allTags.addAll(tags);
                 if (!ignore && previousTagIndex != 0) {
                     final List<Token> commentTokens = Utils.getCommentTokens(previousTagIndex, Utils.getEndIndex(tag.TAG()), tokens);
