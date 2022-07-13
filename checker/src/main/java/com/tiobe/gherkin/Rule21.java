@@ -12,7 +12,7 @@ public class Rule21 extends Rule {
     }
 
     public String getSynopsis() {
-        return "Scenario outline should not contain multiple instances of same Scenarios";
+        return "Data tables should not contain identical rows";
     }
 
     public void check(final GherkinParser.InstructionContext ctx, final BufferedTokenStream tokens) {
