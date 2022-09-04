@@ -6,6 +6,7 @@ grammar Gherkin;
 
 // TODO
 
+// implement all rules in Philips backlog (4 to go), except for 249331 (cross file borders)
 // improve command line options
 // use the DutchPickle logo in some way, see website & house style
 // being able to distribute DutchPickle without TiCS
@@ -30,6 +31,7 @@ grammar Gherkin;
 // C# related rule: No comma separated values in table cells (use multiple cells for multiple values)
 // make one improvement to make it easier to integrate DutchPickle in the software process, e.g. npm package, market place etc ask community
 // nice integration in 2nd most common IDE
+// support Robot Framework Gherkin as well
 // remi-christiaan.cool@philips.com: just like integration with C# also integrate with C++
 // nice integration in 3rd most common IDE
 // rules in a separate directory with .class files to allow dynamic patching
