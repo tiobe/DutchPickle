@@ -16,6 +16,7 @@ public class Rule27 extends Rule {
 
     public void check(final GherkinParser.MainContext ctx, final BufferedTokenStream tokens) {
         if (ctx.feature() != null && ctx.instructionLine() == null ||
+                ctx.instructionLine(0) == null ||
                 ctx.instructionLine(0).instruction() == null ||
                 ctx.instructionLine(0).instruction().instructionDescription() == null ||
                 !ctx.instructionLine(0).instruction().instructionDescription().getText().matches("(.*)[a-zA-Z0-9](.*)")) {
