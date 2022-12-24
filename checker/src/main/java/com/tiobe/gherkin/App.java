@@ -12,16 +12,21 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class App {
     private static String FILENAME;
 
 
-    public static List<Rule> getRules(final List<String> ruleNames, final List<Violation> violations) {
+    public static List<Rule> getRules(final Set<String> ruleNames, final List<Violation> violations) {
         return ruleNames.stream()
                 .map(App::getRuleByName)
                 .map(x -> instantiateRule(x, violations))
@@ -30,7 +35,7 @@ public class App {
 
     public static Class<? extends Rule> getRuleByName(final String ruleName) {
         try {
-            return Class.forName(App.class.getPackageName() + "." + ruleName).asSubclass(Rule.class);
+            return Class.forName(App.class.getPackageName() + ".Rule" + ruleName).asSubclass(Rule.class);
         } catch (final ClassNotFoundException e) {
             System.out.println("Rule '" + ruleName + "' doesn't exist, please choose another rule ID");
             System.exit(1);
@@ -56,16 +61,29 @@ public class App {
     }
 
     public static void main(final String... args) throws IOException {
-        final List<String> ruleNames = new ArrayList<>();
+        final Set<String> ruleNames = new LinkedHashSet<>();
         String filename = "";
 
         if (args.length == 0) {
-            System.out.println("No argument provided, use 'DutchPickle (--version | { --rule<digits> }* <inputfile>.feature)'");
+            System.out.println("No argument provided, use 'DutchPickle (--version | --rules <digits>+ | --rulesfile <rulesfile>) <inputfile>.feature)'");
             System.exit(1);
         }
+
+        boolean rules = false; // --rules
+        boolean rulesfile = false; // --rulesfile
+
         for (String arg : args) {
-            if (arg.startsWith("--rule")) {
-                ruleNames.add(String.format("Rule%s", (arg.substring(arg.lastIndexOf('e') + 1))));
+            if (rules && arg.matches("\\d+")) {
+                ruleNames.add(arg);
+                continue;
+            } else {
+                rules = false;
+            }
+
+            if (arg.equals("--rules")) {
+                rules = true;
+            } else if (arg.equals("--rulesfile")) {
+                rulesfile = true;
             } else if (arg.toLowerCase().endsWith(".feature")) {
                 if (new File(arg).exists()) {
                     filename = arg;
@@ -75,12 +93,19 @@ public class App {
                 }
             } else if (arg.equals("--version")) {
                 final String version = getVersion();
-                System.out.println("DutchPickle version " + version + ", Copyright 2021, TIOBE Software B.V.");
+                System.out.println("DutchPickle version " + version + ", Copyright 2022, TIOBE Software B.V.");
                 System.exit(0);
+            } else if (rulesfile) {
+                ruleNames.addAll(readRulesFile(arg));
+                rulesfile = false;
             } else {
                 System.out.println("Unknown option '" + arg + "' encountered, please run without arguments for help");
                 System.exit(1);
             }
+        }
+
+        if (ruleNames.isEmpty()) {
+            ruleNames.addAll(readRulesFile()); // check for default rule file
         }
 
         if (filename.isEmpty()) {
@@ -93,8 +118,27 @@ public class App {
         System.exit(0);
     }
 
-    private static void checkViolations(final String filename, final List<String> ruleNames) throws IOException {
-        final List<Violation> violations = getViolations(filename, ruleNames);
+    private static List<String> readRulesFile() {
+        return readRulesFile("rules.ini");
+    }
+
+    private static List<String> readRulesFile(final String fileName) {
+        List<String> contents = new ArrayList<>();
+
+        try {
+            contents = Files.readAllLines(Paths.get(fileName));
+        } catch (final IOException e) {
+            System.out.println("Rules file '" + fileName + "' doesn't exist");
+            System.exit(1);
+        }
+        return contents;
+    }
+
+    private static void checkViolations(final String filename, final Set<String> ruleNames) throws IOException {
+        List<Violation> violations = getViolations(filename, ruleNames);
+
+        // sort the violations
+        violations = violations.stream().sorted(Comparator.comparingInt(Violation::getLineNumber)).collect(Collectors.toList());
 
         if (violations.isEmpty()) {
             System.out.println("No violations found");
@@ -105,7 +149,7 @@ public class App {
         }
     }
 
-    public static List<Violation> getViolations(final String filename, final List<String> ruleNames) throws IOException {
+    public static List<Violation> getViolations(final String filename, final Set<String> ruleNames) throws IOException {
         final CharStream charStream = CharStreams.fromFileName(filename);
         final GherkinLexer lexer = new GherkinLexer(charStream);
         final CommonTokenStream tokens = new CommonTokenStream(lexer);

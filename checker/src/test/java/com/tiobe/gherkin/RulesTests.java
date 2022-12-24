@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -73,7 +74,7 @@ public class RulesTests {
         final String contents = Files.readString(path);
         final List<String> lines = contents.lines().collect(Collectors.toUnmodifiableList());
         final List<Integer> expected = getExpectedViolationLineNumbers(lines);
-        final List<Violation> violations = App.getViolations(path.toString(), List.of("Rule" + rule));
+        final List<Violation> violations = App.getViolations(path.toString(), Set.of("Rule" + rule));
         violations.forEach(x -> x.printToStdout(path.toString()));
         final List<Integer> actual = violations.stream()
                 .map(Violation::getLineNumber)
