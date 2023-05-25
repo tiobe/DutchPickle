@@ -43,7 +43,7 @@ jobs:
       - name: Create artifact
         run: |
           mkdir -p ./build-artifact/DutchPickle/
-          tree
+          ls -la ./checker/build
           cp ./checker/build/distributions/DutchPickle.zip ./build-artifact/TICSsql-${{needs.gitversion.outputs.fullSemVer}}.zip
       - name: Upload build Artifact
         uses: actions/upload-artifact@v3.1.2
