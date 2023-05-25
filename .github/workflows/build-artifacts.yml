@@ -42,8 +42,8 @@ jobs:
         run: ./gradlew -PCHECKERVERSION="${{needs.gitversion.outputs.fullSemVer}}" --no-daemon distZip
       - name: Create artifact
         run: |
-          mkdir -p ./build-artifact/DutchPickle/
-          ls -la ./checker/build
+          mkdir ./build-artifact
+          ls -la ./checker/build/distributions
           cp ./checker/build/distributions/DutchPickle.zip ./build-artifact/TICSsql-${{needs.gitversion.outputs.fullSemVer}}.zip
       - name: Upload build Artifact
         uses: actions/upload-artifact@v3.1.2
