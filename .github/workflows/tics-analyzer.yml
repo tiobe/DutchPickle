@@ -1,8 +1,8 @@
 name: TICS Analyzer
 
-on:
-  schedule:
-    - cron: "00 00 * * *"
+on: workflow_dispatch
+#   schedule:
+#     - cron: "00 00 * * *"
 
 jobs:
   TICSQServer:
@@ -14,9 +14,11 @@ jobs:
         with:
           distribution: temurin
           java-version: 8
-          cache: maven
-      - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots package
+          cache: gradle
+      - name: Build with Gradle
+        run: ./gradlew build --no-daemon
+      - name: Generate coverage report
+        run: ./gradlew jacocoTestReport
       - name: Install and run TICSQSERVER
         env:
           TICSAUTHTOKEN: ${{ secrets.EBOIT_ANALYZER_TOKEN }}
