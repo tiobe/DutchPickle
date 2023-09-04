@@ -29,14 +29,13 @@ jobs:
     needs: gitversion
     outputs:
       artifact: ${{steps.setname.outputs.artifact}}
+      version: ${{needs.gitversion.outputs.fullSemVer}}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Set artifact name
         id: setname
-        run: |
-          echo "artifact=DutchPickle-${{needs.gitversion.outputs.fullSemVer}}" >> $GITHUB_OUTPUT
-          echo "version=${{needs.gitversion.outputs.fullSemVer}}" >> $GITHUB_OUTPUT
+        run: echo "artifact=DutchPickle-${{needs.gitversion.outputs.fullSemVer}}" >> $GITHUB_OUTPUT
       - name: Setup Java JDK
         uses: actions/setup-java@v1.4.4
         with:      
