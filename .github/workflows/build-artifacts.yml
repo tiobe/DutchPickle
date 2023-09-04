@@ -41,7 +41,7 @@ jobs:
         with:      
           java-version: 11
       - name: Build
-        working-directory: ./checker
+        working-directory: checker
         run: ./gradlew -PCHECKERVERSION="${{needs.gitversion.outputs.fullSemVer}}" --no-daemon distZip
       - name: Create artifact
         run: |
