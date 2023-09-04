@@ -14,9 +14,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3    
     - name: Setup Java JDK
-      uses: actions/setup-java@v1.4.4
-      with:      
+      uses: actions/setup-java@v3
+      with:
+        distribution: temurin      
         java-version: 11
+        cache: gradle
     - name: Build
       #working-directory: checker
       run: ./gradlew clean build jacocoTestReport
