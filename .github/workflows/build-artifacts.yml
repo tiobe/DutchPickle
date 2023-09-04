@@ -25,7 +25,7 @@ jobs:
   gitversion:
     uses: ./.github/workflows/gitversion.yml
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu
     needs: gitversion
     outputs:
       artifact: ${{steps.setname.outputs.artifact}}
