@@ -12,7 +12,7 @@ jobs:
     uses: ./.github/workflows/build-artifacts.yml
     needs: gitversion
   publish:
-    runs-on: self-hosted
+    runs-on: ubuntu
     needs: build
     permissions:
       contents: write
