@@ -5,6 +5,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin      
+          java-version: 11
+          cache: gradle
+      - name: Build
+      #working-directory: checker
+        run: ./gradlew clean build jacocoTestReport
       - name: TICS GitHub Action
         uses: tiobe/tics-github-action@v2
         with:
