@@ -108,7 +108,7 @@ public final class Utils {
         while (index >= 0) {
             result.add(index);
             index = str.indexOf(match, index+1);
-        }
+        } 
         return result;
     }
 
