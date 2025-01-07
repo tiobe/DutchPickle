@@ -101,4 +101,15 @@ public final class Utils {
         return nodes.get(nodes.size() - 1).getSymbol().getTokenIndex();
     }
 
+    // This function returns all indexes of a string, instead of only the first one, generalization of indexOf
+    public static List<Integer> indexesOf(String str, String match) {
+        List<Integer> result = new ArrayList<>();
+        int index = str.indexOf(match);
+        while(index >= 0) {
+            result.add(index);
+            index = str.indexOf(match, index+1);
+        }
+        return result;
+    }
+
 }

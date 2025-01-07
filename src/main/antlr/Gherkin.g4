@@ -6,8 +6,6 @@ grammar Gherkin;
 
 // TODO
 
-// create stand alone build DutchPickle
-// put Gherkin coding standard in new coding standard viewer
 // go public: github
 // implement all rules in Philips backlog (4 to go), except for 249331 (cross file borders)
 // use the DutchPickle logo in some way, see website & house style
