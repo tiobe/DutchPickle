@@ -31,7 +31,7 @@ public final class Utils {
         return datatable.DATATABLE().stream().map(cell -> cell.getText().replaceAll("^\\|\\s*(?:(.*[^\\s])\\s*)?$", "$1")).collect(Collectors.toList());
     }
 
-    // single line comments (starting with #) contain a preceding newline which causes line numbers to be one too low, this should be compensated.
+    // single line comments (starting with #) contain a preceding newline    which causes line numbers to be one too low, this should be compensated.
     public static int getCommentLineNumber(final Token token) {
         final int line = token.getLine();
         return token.getText().startsWith("\n") || token.getText().startsWith("\r") ? line + 1 : line;
@@ -102,10 +102,10 @@ public final class Utils {
     }
 
     // This function returns all indexes of a string, instead of only the first one, generalization of indexOf
-    public static List<Integer> indexesOf(String str, String match) {
-        List<Integer> result = new ArrayList<>();
+    public static List<Integer> indexesOf(final String str, final String match) {
+        final List<Integer> result = new ArrayList<>();
         int index = str.indexOf(match);
-        while(index >= 0) {
+        while (index >= 0) {
             result.add(index);
             index = str.indexOf(match, index+1);
         }

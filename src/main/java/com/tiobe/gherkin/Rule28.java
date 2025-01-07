@@ -20,10 +20,10 @@ public class Rule28 extends Rule {
         for (Token token : tokens.getTokens()) {
             // tabs in doc strings are allowed
             if (!token.getText().startsWith("\"\"\"") && !token.getText().startsWith("```")) {
-                List<Integer> newlines = Utils.indexesOf(token.getText(), "\n");
+                final List<Integer> newlines = Utils.indexesOf(token.getText(), "\n");
                 for (int index : Utils.indexesOf(token.getText(), "\t")) {
-                    int prevNewlines = newlines.stream().filter(i -> i < index).collect(Collectors.toList()).size();
-                    int lineNumber = token.getLine() + prevNewlines;
+                    final int prevNewlines = newlines.stream().filter(i -> i < index).collect(Collectors.toList()).size();
+                    final int lineNumber = token.getLine() + prevNewlines;
                     addViolation(28, lineNumber, token.getCharPositionInLine());
                 }
             }
