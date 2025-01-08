@@ -37,7 +37,7 @@ jobs:
         id: setname
         run: echo "artifact=DutchPickle-${{needs.gitversion.outputs.fullSemVer}}" >> $GITHUB_OUTPUT
       - name: Setup Java JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:      
           distribution: temurin      
           java-version: 11
