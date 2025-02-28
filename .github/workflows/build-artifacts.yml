@@ -50,7 +50,7 @@ jobs:
           mkdir ./build-artifact
           cp ./build/distributions/DutchPickle.zip ./build-artifact/${{steps.setname.outputs.artifact}}.zip
       - name: Upload build Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{steps.setname.outputs.artifact}}
           path: ./build-artifact/${{steps.setname.outputs.artifact}}.zip
